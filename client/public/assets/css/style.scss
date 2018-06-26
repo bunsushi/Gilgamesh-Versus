@@ -1,0 +1,141 @@
+// VARIABLES
+
+// Colors
+$lapis: #132468;
+$carnelian: #c13221;
+$gold: #f9d549;
+$snow: #f7f7f8;
+$snow-contrast: #D5D5D6;
+$black-opaque: rgba(0, 0, 0, 0.7);
+
+// Fonts
+$nunito: "Nunito", sans-serif;
+$press-start: "Press Start 2P", cursive;
+
+body {
+    background-color: $lapis;
+    font-family: $nunito;
+}
+
+// HOME
+
+#home-gilgamesh {
+    position: relative;
+    height: 90vh;
+    animation: dance 4s infinite;
+}
+
+@keyframes dance {
+    0% {
+        transform: rotate(5deg);
+        top: 0;
+        left: 0;
+    }
+
+    25% {
+        top: 40px;
+        left: 0;
+    }
+
+    50% {
+        transform: rotate(-5deg);
+        top: 20px;
+        left: 20px;
+    }
+
+    75% {
+        top: 20px;
+        left: 20px;
+    }
+
+    100% {
+        transform: rotate(6deg);
+        top: 0px;
+        left: 0;
+    }
+}
+
+.title {
+    color: $gold;
+
+    h1 {
+        font-size: 6em;
+        font-weight: 900;
+        color: $carnelian;
+        font-family: $press-start;
+        text-transform: uppercase;
+    }
+
+    h4 {
+        font-family: $nunito;
+        font-weight: 700;
+    }
+
+    #title-gilgamesh {
+        font-size: 4em;
+        text-shadow: 7px 7px $black-opaque;
+    }
+
+    #title-versus {
+        font-family: $press-start;
+        font-size: 6em;
+        text-shadow: 9px 9px $black-opaque;
+    }
+}
+
+// Login / Sign Up
+.login {
+    background-color: $snow;
+    width: 80%;
+    border-radius: 15px;
+    box-shadow: 1em 1em rgba(0, 0, 0, 0.7);
+
+    form {
+        text-align: center;
+    }
+}
+
+.form-options {
+    text-align: center;
+    background-color: $snow-contrast;
+    border-top-left-radius: 15px;
+    border-top-right-radius: 15px;
+
+    .form-pill {
+        display: inline-block;
+        width: 50%;
+        padding: 20px;
+    }
+
+    #login {
+        background-color: $snow;
+        border-top-left-radius: 15px;
+        border-top-right-radius: 15px;
+    }
+
+    #sign-up {
+        // border-bottom: 1px solid black;
+        background-color: $snow-contrast;
+        border-top-right-radius: 15px;
+    }
+}
+
+.form-options:hover {
+    cursor: pointer;
+}
+
+.form-group {
+    padding: 1em;
+
+    input {
+        width: 75%;
+        border-radius: 15px;
+        padding: 5px;
+        margin: .5em;
+    }
+
+    .btn {
+        width: 50%;
+        background-color: $gold;
+    }
+}
