@@ -2,9 +2,20 @@ body {
   background-color: #132468;
   font-family: "Nunito", sans-serif; }
 
+h1 {
+  font-family: "Nunito", sans-serif; }
+
+.container-fluid {
+  padding: 0 5vw; }
+
+.navbar {
+  font-family: "Nunito", sans-serif;
+  color: #f7f7f8;
+  margin: 15px auto; }
+
 #home-gilgamesh {
   position: relative;
-  height: 90vh;
+  height: 85vh;
   animation: dance 4s infinite; }
 
 @keyframes dance {
@@ -27,7 +38,8 @@ body {
     top: 0px;
     left: 0; } }
 .title {
-  color: #f9d549; }
+  color: #f9d549;
+  text-align: center; }
   .title h1 {
     font-size: 6em;
     font-weight: 900;
@@ -48,6 +60,7 @@ body {
 .login {
   background-color: #f7f7f8;
   width: 80%;
+  margin: 50px auto 0 auto;
   border-radius: 15px;
   box-shadow: 1em 1em rgba(0, 0, 0, 0.7); }
   .login form {

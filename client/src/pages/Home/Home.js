@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import Wrapper from "../../components/Wrapper";
 import { Container, Row, Column } from "../../components/Bootstrap";
+import Navbar from "../../components/Navbar";
 import Header from "../../components/Header";
 import Title from "../../components/Title";
 import Login from "../../components/Login";
@@ -13,6 +14,7 @@ class Home extends Component {
     return (
       <Wrapper>
         <Container size="container-fluid">
+          <Navbar />
           <Row>
             <Column size="col-md-6">
               <Header />
