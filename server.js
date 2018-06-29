@@ -25,7 +25,7 @@ app.use(passport.initialize());
 app.use(passport.session()); // persistent login sessions
 
 // Load Passport strategies
-require("./config/passport/passport.js")(passport);
+require("./config/passport/passport.js")(passport, LocalStrategy);
 
 // Serve up static assets (usually on heroku)
 if (process.env.NODE_ENV === "production") {
