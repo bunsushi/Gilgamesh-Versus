@@ -37,8 +37,8 @@ class Login extends Component {
             <div className="login">
                 <form id="signup" name="signup">
                     <div className="form-options">
-                        <div className="form-pill" id="login"><h1>log in</h1></div>
                         <div className="form-pill" id="sign-up"><h1>sign up</h1></div>
+                        <div className="form-pill" id="login"><h1>log in</h1></div>
                     </div>
                     <div className="form-group">
                         <label></label>
