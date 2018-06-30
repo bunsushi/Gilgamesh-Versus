@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import Wrapper from "../../components/Wrapper";
-import { Container, Row, Column } from "../../components/Bootstrap";
-import UserMenu from "../../components/UserMenu";
+import { Row, Column } from "../../components/Bootstrap";
+import { UserMenu, ProgressContainer } from "../../components/MenuPage";
 
 class Menu extends Component {
 
@@ -13,7 +13,7 @@ class Menu extends Component {
             <UserMenu />
           </Column>
           <Column size="col-md-9">
-            <h1>Here's the Progress Menu</h1>
+            <ProgressContainer />
           </Column>
         </Row>
       </Wrapper>

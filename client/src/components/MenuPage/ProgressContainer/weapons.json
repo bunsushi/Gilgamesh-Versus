@@ -1,0 +1,42 @@
+[
+    {
+        "id": 0,
+        "name": "shield-03",
+        "image": "/assets/images/weapons/053-mace.png"
+    },
+    {
+        "id": 1,
+        "name": "trophy-22",
+        "image": "/assets/images/weapons/001-helmet-1.png"
+    },
+    {
+        "id": 2,
+        "name": "cup-15",
+        "image": "/assets/images/weapons/022-axe-3.png"
+    },
+    {
+        "id": 3,
+        "name": "trophy-14",
+        "image": "/assets/images/weapons/024-shield-4.png"
+    },
+    {
+        "id": 4,
+        "name": "trophy-13",
+        "image": "/assets/images/weapons/029-bow-and-arrow.png"
+    },
+    {
+        "id": 5,
+        "name": "trophy-12",
+        "image": "/assets/images/weapons/038-knife.png"
+    },
+    {
+        "id": 6,
+        "name": "medal-05",
+        "image": "/assets/images/weapons/033-sword-2.png"
+    },
+    {
+        "id": 7,
+        "name": "ribbon-33",
+        "image": "/assets/images/weapons/054-axe-1.png"
+    }
+]
