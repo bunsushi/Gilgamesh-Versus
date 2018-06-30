@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { withRouter } from "react-router-dom";
 import API from "../../utils/API";
 
 class Login extends Component {
@@ -24,7 +25,9 @@ class Login extends Component {
                 username: this.state.username,
                 password: this.state.password
             })
-                .then(res => res.json(true))
+                .then(res => {
+                    this.props.history.push("/menu")
+                })
                 .catch(err => console.log(err));
         }
     };
@@ -52,4 +55,4 @@ class Login extends Component {
     }
 }
 
-export default Login;
+export default withRouter(Login);

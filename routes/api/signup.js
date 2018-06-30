@@ -21,7 +21,7 @@ router.route("/")
                 return;
             }
             passport.authenticate("local")(req, res, function() {
-                res.redirect("/menu");
+                res.json(true);
             });
         });
     });
