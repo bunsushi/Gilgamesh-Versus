@@ -1,6 +1,8 @@
 const mongoose = require("mongoose");
-const Schema = mongoose.Schema;
 const passportLocalMongoose = require("passport-local-mongoose");
+
+// Save a reference to the Schema constructor
+const Schema = mongoose.Schema;
 
 const accountSchema = new Schema({
     firstname: {
@@ -25,8 +27,10 @@ const accountSchema = new Schema({
     }
 });
 
+// Incorporate password hashing/salting from passport-local-mongoose
 accountSchema.plugin(passportLocalMongoose);
 
+// Create the model from the above schema
 const Account = mongoose.model("Account", accountSchema);
 
 module.exports = Account;
