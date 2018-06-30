@@ -13,7 +13,7 @@ router.route("/")
             firstname: req.body.firstname,
             lastname: req.body.lastname,
             username: req.body.username
-        },
+        }),
         req.body.password,
         function(err, account) {
             if (err) {
@@ -23,7 +23,7 @@ router.route("/")
             passport.authenticate("local")(req, res, function() {
                 res.redirect("/menu");
             });
-        }));
+        });
     });
 
 module.exports = router;
