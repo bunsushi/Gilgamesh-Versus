@@ -18,9 +18,8 @@ router.route("/")
             if (err) {
                 return res.json(err);
             }
-            passport.authenticate("local", {
-                successRedirect: "/menu",
-                failureRedirect: "/"
+            passport.authenticate("local")(req, res, function() {
+                res.redirect("/menu");
             });
         }));
     });
