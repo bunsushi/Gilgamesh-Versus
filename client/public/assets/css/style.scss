@@ -215,6 +215,7 @@ h1 {
     font-size: 2em;
     padding: 10px;
     font-family: $press-start;
+    text-shadow: 4px 4px $black-opaque;
 }
 
 // Progress & Achievements
@@ -265,7 +266,8 @@ h1 {
         z-index: 1;
         position: absolute;
         top: 40%;
-        padding: 10px;
+        left: 20%;
+        text-shadow: 3px 3px $black-opaque;
     }
 }
 

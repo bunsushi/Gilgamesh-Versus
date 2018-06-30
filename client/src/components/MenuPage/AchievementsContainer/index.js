@@ -1,1 +1,1 @@
-export { default } from "./Achievements";
+export { default } from "./AchievementsContainer";

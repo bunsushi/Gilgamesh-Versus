@@ -133,7 +133,8 @@ h1 {
   left: 30%;
   font-size: 2em;
   padding: 10px;
-  font-family: "Press Start 2P", cursive; }
+  font-family: "Press Start 2P", cursive;
+  text-shadow: 4px 4px rgba(0, 0, 0, 0.7); }
 
 .progress-container {
   background-color: #333;
@@ -172,7 +173,8 @@ h1 {
     z-index: 1;
     position: absolute;
     top: 40%;
-    padding: 10px; }
+    left: 20%;
+    text-shadow: 3px 3px rgba(0, 0, 0, 0.7); }
 
 #resume-game-button:hover {
   cursor: pointer; }

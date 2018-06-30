@@ -11,6 +11,9 @@ class ProgressContainer extends Component {
         weapons: weapons
     }
 
+    // Write a function that checks our database to see if a player has earned a badge or a weapon
+    // If so, add class "badge-earned"; else default class "badge-image"
+
     render() {
         return (
             <div>

@@ -24,7 +24,7 @@ const Progress = props => (
             <Column size="col-md-3">
                 <div id="resume-game-button">
                     <div id="resume-game"></div>
-                    <h4>RESUME</h4>
+                    <h4>PLAY</h4>
                 </div>
             </Column>
         </Row>
