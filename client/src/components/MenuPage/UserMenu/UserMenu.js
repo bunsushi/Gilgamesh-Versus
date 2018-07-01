@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
 const UserMenu = props => (
     <div className="user-menu">
@@ -8,7 +9,9 @@ const UserMenu = props => (
         <h1>Hello,</h1>
         {/* pass in our username props from Passport */}
         <h1>USERNAME!</h1>
-        <div id="quit-button">QUIT</div>
+        <div id="quit-button">
+            <Link to="/signout" onClick={props.onClick}>QUIT</Link>
+        </div>
     </div>
 );
 
