@@ -1,6 +1,10 @@
 import axios from "axios";
 
 export default {
+    // Gets user information
+    getUser: function() {
+        return axios.get("/api/check");
+    },
     // Registers a new user in the DB
     signupUser: function(signupData) {
         return axios.post("/api/signup", signupData);
