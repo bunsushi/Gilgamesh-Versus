@@ -6,6 +6,22 @@ import API from "../../utils/API";
 
 class Menu extends Component {
 
+  state = {
+    user: {}
+  };
+
+  componentDidMount() {
+    this.getUser();
+  };
+
+  getUser = () => {
+    API.getUser()
+      .then(res => {
+        this.setState(res.data);
+      })
+      .catch(err => console.log(err));
+  };
+
   signoutUser = event => {
     event.preventDefault();
     API.signoutUser()
@@ -23,7 +39,7 @@ class Menu extends Component {
       <Wrapper>
         <Row>
           <Column size="col-md-3">
-            <UserMenu onClick={this.signoutUser} />
+            <UserMenu user={this.state.user} onClick={this.signoutUser} />
           </Column>
           <Column size="col-md-9">
             <ProgressContainer />

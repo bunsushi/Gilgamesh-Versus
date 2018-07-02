@@ -8,7 +8,7 @@ const UserMenu = props => (
         </div>
         <h1>Hello,</h1>
         {/* pass in our username props from Passport */}
-        <h1>USERNAME!</h1>
+        <h1>{props.user.username}!</h1>
         <div id="quit-button">
             <Link to="/signout" onClick={props.onClick}>QUIT</Link>
         </div>
