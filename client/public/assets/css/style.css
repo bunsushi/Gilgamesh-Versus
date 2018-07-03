@@ -75,12 +75,17 @@ h1 {
     display: inline-block;
     width: 50%;
     padding: 20px; }
-  .form-options #login {
+  .form-options .form-pill-active {
     background-color: #f7f7f8;
+    border-top-left-radius: 15px;
+    border-top-right-radius: 15px;
+    display: inline-block;
+    width: 50%;
+    padding: 20px; }
+  .form-options #login {
     border-top-left-radius: 15px;
     border-top-right-radius: 15px; }
   .form-options #sign-up {
-    background-color: #D5D5D6;
     border-top-right-radius: 15px; }
 
 .form-options:hover {
