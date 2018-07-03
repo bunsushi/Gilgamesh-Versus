@@ -15,7 +15,7 @@ class Login extends Component {
 
     handleFormStatus = event => {
         // Get the id of the clicked FormPill
-        const formItemId = event.target.attributes.getNamedItem("id").value;
+        const formItemId = event.target.attributes.getNamedItem("data-pill-id").value;
         // Clone this.state to the newState object
         const newState = { ...this.state };
         // Update newState depending which FormPill was clicked
@@ -60,8 +60,8 @@ class Login extends Component {
             <div className="login">
                 <form id="signup" name="signup">
                     <div className="form-options">
-                        <FormPill id="sign-up" onClick={this.handleFormStatus}><h1 id="sign-up">sign up</h1></FormPill>
-                        <FormPill id="login" onClick={this.handleFormStatus}><h1 id="login">log in</h1></FormPill>
+                        <FormPill id="sign-up" data-pill-id="sign-up" onClick={this.handleFormStatus}><h1 data-pill-id="sign-up">sign up</h1></FormPill>
+                        <FormPill id="login" data-pill-id="login" onClick={this.handleFormStatus}><h1 data-pill-id="login">log in</h1></FormPill>
                     </div>
                     <div className="form-group">
                         <label></label>
