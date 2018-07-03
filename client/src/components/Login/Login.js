@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { withRouter } from "react-router-dom";
 import API from "../../utils/API";
+import FormPill from "../FormPill";
 
 class Login extends Component {
 
@@ -8,7 +9,19 @@ class Login extends Component {
         firstname: "",
         lastname: "",
         username: "",
-        password: ""
+        password: "",
+        formSignupStatus: true
+    };
+
+    handleFormStatus = event => {
+        // Get the id of the clicked FormPill
+        const formItemId = event.target.attributes.getNamedItem("data-pill-id").value;
+        // Clone this.state to the newState object
+        const newState = { ...this.state };
+        // Update newState depending which FormPill was clicked
+        newState.formSignupStatus = (formItemId === "login") ? false : true;
+        // Replace this.state with newState
+        this.setState(newState);
     };
 
     handleInputChange = event => {
@@ -20,8 +33,18 @@ class Login extends Component {
 
     handleFormSubmit = event => {
         event.preventDefault();
-        if (this.state.username && this.state.password) {
+        if (this.state.username && this.state.password && this.state.formSignupStatus) {
             API.signupUser({
+                username: this.state.username,
+                password: this.state.password
+            })
+                .then(res => {
+                    this.props.history.push("/menu")
+                })
+                .catch(err => console.log(err));
+        }
+        else if (this.state.username && this.state.password && !this.state.formSignupStatus) {
+            API.signinUser({
                 username: this.state.username,
                 password: this.state.password
             })
@@ -37,8 +60,8 @@ class Login extends Component {
             <div className="login">
                 <form id="signup" name="signup">
                     <div className="form-options">
-                        <div className="form-pill" id="sign-up"><h1>sign up</h1></div>
-                        <div className="form-pill" id="login"><h1>log in</h1></div>
+                        <FormPill id="sign-up" data-pill-id="sign-up" onClick={this.handleFormStatus}><h1 data-pill-id="sign-up">sign up</h1></FormPill>
+                        <FormPill id="login" data-pill-id="login" onClick={this.handleFormStatus}><h1 data-pill-id="login">log in</h1></FormPill>
                     </div>
                     <div className="form-group">
                         <label></label>
