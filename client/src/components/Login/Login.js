@@ -60,8 +60,8 @@ class Login extends Component {
             <div className="login">
                 <form id="signup" name="signup">
                     <div className="form-options">
-                        <FormPill id="sign-up" data-pill-id="sign-up" onClick={this.handleFormStatus}><h1 data-pill-id="sign-up">sign up</h1></FormPill>
-                        <FormPill id="login" data-pill-id="login" onClick={this.handleFormStatus}><h1 data-pill-id="login">log in</h1></FormPill>
+                        <FormPill className={this.state.formSignupStatus ? 'form-pill-active' : 'form-pill'} id="sign-up" data-pill-id="sign-up" onClick={this.handleFormStatus}><h1 data-pill-id="sign-up">sign up</h1></FormPill>
+                        <FormPill className={!this.state.formSignupStatus ? 'form-pill-active' : 'form-pill'} id="login" data-pill-id="login" onClick={this.handleFormStatus}><h1 data-pill-id="login">log in</h1></FormPill>
                     </div>
                     <div className="form-group">
                         <label></label>

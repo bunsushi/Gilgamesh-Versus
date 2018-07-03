@@ -127,15 +127,24 @@ h1 {
         padding: 20px;
     }
 
-    #login {
+    .form-pill-active {
         background-color: $snow;
+        border-top-left-radius: 15px;
+        border-top-right-radius: 15px;
+        display: inline-block;
+        width: 50%;
+        padding: 20px;
+    }
+
+    #login {
+        // background-color: $snow;
         border-top-left-radius: 15px;
         border-top-right-radius: 15px;
     }
 
     #sign-up {
         // border-bottom: 1px solid black;
-        background-color: $snow-contrast;
+        // background-color: $snow-contrast;
         border-top-right-radius: 15px;
     }
 }
