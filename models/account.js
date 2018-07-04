@@ -20,7 +20,8 @@ const accountSchema = new Schema({
     },
     email: {
         type: mongoose.SchemaTypes.Email,
-        required: false
+        required: false,
+        allowBlank: true
     },
     password: {
         type: String,

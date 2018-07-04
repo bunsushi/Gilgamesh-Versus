@@ -12,7 +12,8 @@ router.route("/")
         Account.register(new Account({
             firstname: req.body.firstname,
             lastname: req.body.lastname,
-            username: req.body.username
+            username: req.body.username,
+            email: req.body.email
         }),
         req.body.password,
         function(err, account) {
