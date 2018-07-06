@@ -9,6 +9,7 @@ class Login extends Component {
         firstname: "",
         lastname: "",
         username: "",
+        email: "",
         password: "",
         formSignupStatus: true
     };
@@ -36,6 +37,7 @@ class Login extends Component {
         if (this.state.username && this.state.password && this.state.formSignupStatus) {
             API.signupUser({
                 username: this.state.username,
+                email: this.state.email,
                 password: this.state.password
             })
                 .then(res => {
@@ -66,7 +68,8 @@ class Login extends Component {
                     <div className="form-group">
                         <label></label>
                         <input className="form-control" type="text" id="username" name="username" placeholder="username" value={this.state.username} onChange={this.handleInputChange} />
-                        {/* <br /> */}
+                        <label></label>
+                        <input className={!this.state.formSignupStatus ? 'form-control-hidden' : 'form-control'} type="text" id="email" name="email" placeholder="email address (optional)" value={this.state.email} onChange={this.handleInputChange} />
                         <label></label>
                         <input className="form-control" type="password" id="password" name="password" placeholder="password" value={this.state.password} onChange={this.handleInputChange} />
                         <br />

@@ -102,6 +102,9 @@ h1 {
     width: 50%;
     background-color: #f9d549; }
 
+.form-control-hidden {
+  display: none; }
+
 .user-menu {
   background-color: #c13221;
   width: 25%;
