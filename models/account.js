@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
 const passportLocalMongoose = require("passport-local-mongoose");
+require("mongoose-type-email");
 
 // Save a reference to the Schema constructor
 const Schema = mongoose.Schema;
@@ -16,6 +17,11 @@ const accountSchema = new Schema({
     username: {
         type: String,
         required: true
+    },
+    email: {
+        type: mongoose.SchemaTypes.Email,
+        required: false,
+        allowBlank: true
     },
     password: {
         type: String,
