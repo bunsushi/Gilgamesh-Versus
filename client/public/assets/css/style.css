@@ -96,11 +96,14 @@ h1 {
   .form-group input {
     width: 75%;
     border-radius: 15px;
-    padding: 5px;
-    margin: .5em; }
+    text-align: center;
+    margin: 0 auto; }
   .form-group .btn {
     width: 50%;
     background-color: #f9d549; }
+
+.form-control-hidden {
+  display: none; }
 
 .user-menu {
   background-color: #c13221;

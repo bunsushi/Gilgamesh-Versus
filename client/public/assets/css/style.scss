@@ -159,14 +159,20 @@ h1 {
     input {
         width: 75%;
         border-radius: 15px;
-        padding: 5px;
-        margin: .5em;
+        text-align: center;
+        margin: 0 auto;
+        // padding: 5px;
+        // margin: .5em;
     }
 
     .btn {
         width: 50%;
         background-color: $gold;
     }
+}
+
+.form-control-hidden {
+    display: none;
 }
 
 // MENU
