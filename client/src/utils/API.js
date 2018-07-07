@@ -3,7 +3,11 @@ import axios from "axios";
 export default {
     // Gets user information
     getUser: function() {
-        return axios.get("/api/check");
+        return axios.get("/api/check/user");
+    },
+    // Gets user authentication status
+    getAuthStatus: function() {
+        return axios.get("/api/check/auth");
     },
     // Registers a new user in the DB
     signupUser: function(signupData) {
