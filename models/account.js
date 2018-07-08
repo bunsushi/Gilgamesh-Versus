@@ -30,6 +30,10 @@ const accountSchema = new Schema({
     date: {
         type: Date,
         default: Date.now
+    },
+    achievement: {
+        type: Schema.Types.ObjectId,
+        ref: "Achievement"
     }
 });
 
