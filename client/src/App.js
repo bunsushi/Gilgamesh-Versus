@@ -18,27 +18,33 @@ const App = () => (
 );
 
 const realAuth = {
-  isAuthenticated: false,
-  getAuthStatus() {
-    API.getAuthStatus()
-      .then(res => {
-        console.log(res);
-        if (res.data) {
-          console.log("Authenticated!");
-          this.isAuthenticated = true;
-        }
-        else {
-          console.log("Not authenticated!");
-          console.log(res.data);
-        }
-      })
-      .catch(err => console.log(err));
+  // isAuthenticated: false,
+  async getAuthStatus() {
+    let res = await API.getAuthStatus();
+    await console.log(res);
+    let returnVal = await res.data;
+      // .then(res => {
+        // console.log(res);
+        // if (res.data) {
+        //   console.log("Authenticated!");
+        //   console.log(res.data);
+        //   return true;
+        // }
+        // else {
+        //   console.log("Not authenticated!");
+        //   console.log(res.data);
+        //   return false;
+        // }
+      // })
+      // .catch(err => console.log(err));
+    console.log(returnVal);
+    return returnVal;
   }
 };
 
 const PrivateRoute = ({ component: Component, ...rest }) => (
-  <Route {...rest} onLoad={realAuth.getAuthStatus()} render={(props) => (
-    realAuth.isAuthenticated === true
+  <Route {...rest} render={(props) => (
+    realAuth.getAuthStatus() === true
       ? <Component {...props} />
       : <Redirect to="/" />
   )} />
