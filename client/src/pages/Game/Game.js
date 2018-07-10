@@ -1,20 +1,19 @@
 import React, { Component } from "react";
 import Wrapper from "../../components/Wrapper";
+import PhaserContainer from "../../components/PhaserContainer";
 import { Container } from "../../components/Bootstrap";
 
-class Home extends Component {
-
-  //TODO: make onClick events for login/sign up buttons, pass in props
+class Game extends Component {
 
   render() {
     return (
       <Wrapper>
         <Container size="container-fluid">
-          "Found the game page"
+          <PhaserContainer />
         </Container>
       </Wrapper>
     );
   }
 }
 
-export default Home;
+export default Game;
