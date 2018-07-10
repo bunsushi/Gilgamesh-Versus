@@ -6,76 +6,93 @@ const Schema = mongoose.Schema;
 const achievementSchema = new Schema({
     xp: {
         type: Number,
-        required: false
+        required: false,
+        default: 0
     },
     achievements: {
         type: Number,
-        required: false
+        required: false,
+        default: 0
     },
     achvShield: {
         type: Boolean,
-        required: false
+        required: false,
+        default: false
     },
     achvTrophy22: {
         type: Boolean,
-        required: false
+        required: false,
+        default: false
     },
     achvCup: {
         type: Boolean,
-        required: false
+        required: false,
+        default: false
     },
     achvTrophy14: {
         type: Boolean,
-        required: false
+        required: false,
+        default: false
     },
     achvTrophy13: {
         type: Boolean,
-        required: false
+        required: false,
+        default: false
     },
     achvTrophy12: {
         type: Boolean,
-        required: false
+        required: false,
+        default: false
     },
     achvMedal5: {
         type: Boolean,
-        required: false
+        required: false,
+        default: false
     },
     achvRibbon: {
         type: Boolean,
-        required: false
+        required: false,
+        default: false
     },
     weapMace: {
         type: Boolean,
-        required: false
+        required: false,
+        default: false
     },
     weapHelmet: {
         type: Boolean,
-        required: false
+        required: false,
+        default: false
     },
     weapAxe3: {
         type: Boolean,
-        required: false
+        required: false,
+        default: false
     },
     weapShield: {
         type: Boolean,
         required: false,
-        default: true
+        default: false
     },
     weapBowAndArrow: {
         type: Boolean,
-        required: false
+        required: false,
+        default: false
     },
     weapKnife: {
         type: Boolean,
-        required: false
+        required: false,
+        default: false
     },
     weapSword2: {
         type: Boolean,
-        required: false
+        required: false,
+        default: false
     },
     weapAxe1: {
         type: Boolean,
-        required: false
+        required: false,
+        default: false
     },
     date: {
         type: Date,
