@@ -2,6 +2,7 @@ import React from "react";
 import { BrowserRouter as Router, Route, Switch, Redirect } from "react-router-dom";
 import Home from "./pages/Home";
 import Menu from "./pages/Menu";
+import Game from "./pages/Game";
 import NoMatch from "./pages/NoMatch";
 import API from "./utils/API";
 
@@ -11,6 +12,8 @@ const App = () => (
       <Switch>
         <Route exact path="/" component={Home} />
         <PrivateRoute exact path="/menu" component={Menu} />
+        {/* // TODO: protect the game route */}
+        <Route exact path="/game" component={Game} />
         <Route component={NoMatch} />
       </Switch>
     </div>

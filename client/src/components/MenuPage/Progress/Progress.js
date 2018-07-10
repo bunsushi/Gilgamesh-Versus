@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import { Row, Column } from "../../Bootstrap";
 
 const Progress = props => (
@@ -22,10 +23,10 @@ const Progress = props => (
                 <button className="btn btn-primary">Reset Progress?</button>
             </Column>
             <Column size="col-md-3">
-                <div id="resume-game-button">
+            <Link to="/game" onClick={props.onClick}><div id="resume-game-button">
                     <div id="resume-game"></div>
                     <h4>PLAY</h4>
-                </div>
+                </div></Link>
             </Column>
         </Row>
     </div>
