@@ -1,6 +1,7 @@
 const router = require("express").Router();
 const passport = require("passport");
-const Account = require("../../models/account");
+const db = require("../../models");
+const achievementsController = require("../../controllers/achievementsController");
 
 // Matches with "/api/signup"
 router.route("/")
@@ -9,7 +10,7 @@ router.route("/")
         res.json(true);
     })
     .post(function(req, res) {
-        Account.register(new Account({
+        db.Account.register(new db.Account({
             firstname: req.body.firstname,
             lastname: req.body.lastname,
             username: req.body.username,
@@ -22,6 +23,7 @@ router.route("/")
                 return;
             }
             passport.authenticate("local")(req, res, function() {
+                achievementsController.create(req, res);
                 res.json(true);
             });
         });
