@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.0" tiledversion="2018.06.27" orientation="orthogonal" renderorder="right-down" width="5" height="8" tilewidth="70" tileheight="70" infinite="0" nextlayerid="3" nextobjectid="1">
+ <tileset firstgid="1" source="sand.tsx"/>
+ <tileset firstgid="37" name="ground-tileset" tilewidth="70" tileheight="70" tilecount="195" columns="15">
+  <image source="../../ground-tileset.png" trans="ff00ff" width="1050" height="910"/>
+ </tileset>
+ <layer id="2" name="Tile Layer 1" width="5" height="8">
+  <data encoding="base64">
+   AQAAAAIAAAADAAAABAAAAAUAAAAGAAAABwAAAAgAAAAJAAAACgAAAAsAAAAMAAAADQAAAA4AAAAPAAAAEAAAABEAAAASAAAAEwAAABQAAAAVAAAAFgAAABcAAAAYAAAAGQAAABoAAAAbAAAAHAAAAB0AAAAeAAAAHwAAACAAAAAhAAAAIgAAACMAAAAkAAAAAAAAAAAAAAAAAAAAAAAAAA==
+  </data>
+ </layer>
+</map>
