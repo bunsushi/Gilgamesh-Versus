@@ -9,6 +9,10 @@ export default {
     getAuthStatus: function() {
         return axios.get("/api/check/auth");
     },
+    // Gets user achievements
+    getAchievements: function() {
+        return axios.get("/api/achievements/user");
+    },
     // Registers a new user in the DB
     signupUser: function(signupData) {
         return axios.post("/api/signup", signupData);

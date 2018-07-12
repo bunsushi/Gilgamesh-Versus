@@ -12,12 +12,21 @@ class Menu extends Component {
 
   componentDidMount() {
     this.getUser();
+    this.getAchievements();
   };
 
   getUser = () => {
     API.getUser()
       .then(res => {
         this.setState(res.data);
+      })
+      .catch(err => console.log(err));
+  };
+
+  getAchievements = () => {
+    API.getAchievements()
+      .then(res => {
+        console.log(res.data);
       })
       .catch(err => console.log(err));
   };
