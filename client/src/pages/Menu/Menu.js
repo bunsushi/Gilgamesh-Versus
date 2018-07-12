@@ -7,7 +7,8 @@ import API from "../../utils/API";
 class Menu extends Component {
 
   state = {
-    user: {}
+    user: {},
+    achievement: {}
   };
 
   componentDidMount() {
@@ -26,7 +27,8 @@ class Menu extends Component {
   getAchievements = () => {
     API.getAchievements()
       .then(res => {
-        console.log(res.data);
+        this.setState({ achievement: res.data.achievement });
+        console.log(this.state);
       })
       .catch(err => console.log(err));
   };
