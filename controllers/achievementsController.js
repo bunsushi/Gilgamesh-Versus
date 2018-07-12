@@ -10,8 +10,9 @@ module.exports = {
             .catch(err => res.status(422).json(err));
     },
     findById: function(req, res) {
-        db.Achievement
-            .findById(req.params.id)
+        db.Account
+            .findById(req.user._id)
+            .populate("achievement")
             .then(dbModel => res.json(dbModel))
             .catch(err => res.status(422).json(err));
     },

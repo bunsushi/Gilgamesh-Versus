@@ -12,4 +12,8 @@ router.route("/:id")
     .put(achievementsController.update)
     .delete(achievementsController.remove);
 
+// Matches with "/api/achievements/user"
+router.route("/user")
+    .get(achievementsController.findById);
+
 module.exports = router;
