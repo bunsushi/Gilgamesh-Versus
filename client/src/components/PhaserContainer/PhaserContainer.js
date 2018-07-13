@@ -1,7 +1,14 @@
 import React, { Component } from "react";
+import Wrapper from "../../components/Wrapper";
+import Scoreboard from "../../components/Scoreboard";
 import Phaser from "phaser";
 
 class PhaserContainer extends Component {
+
+    state = {
+        score: 0,
+        life: 10
+    }
 
     componentDidMount() {
         this.startGame();
@@ -35,6 +42,8 @@ class PhaserContainer extends Component {
         var gameOver = false;
         var score = 0;
         var coins;
+        var map;
+        var groundLayer, coinLayer;
 
         // this.game = new Phaser.Game(config);
         this.game = new Phaser.Game(config);
@@ -98,6 +107,7 @@ class PhaserContainer extends Component {
             coinLayer.removeTileAt(tile.x, tile.y); // remove the tile/coin
             score++; // add 1 point to the score
             console.log(score);
+            updateScore();
             // text.setText("score: " + score); // set the text to show the current score
             return false;
         }
@@ -109,6 +119,7 @@ class PhaserContainer extends Component {
                 console.log("boop");
                 // player.anims.play('ghost', true);
                 life--;
+                updateLife();
                 // lifeText.setText("life: " + life);
                 console.log(life);
                 if (fly.body.touching.left) {
@@ -156,14 +167,23 @@ class PhaserContainer extends Component {
         }
 
         // test function that calls PhaserContainer method phaserTest
-        var arrowTest = () => {
-            this.phaserTest();
+        // var arrowTest = () => {
+        //     this.phaserTest();
+        // }
+
+        // test function to update score in state
+        var updateScore = () => {
+            this.setState({ score: score });
+            console.log("State score: " + this.state.score);
         }
 
-        arrowTest();
+        // test function to update life in state
+        var updateLife = () => {
+            this.setState({ life: life });
+            console.log("State life: " + this.state.life);
+        }
 
-        let map;
-        let groundLayer, coinLayer;
+        // arrowTest();
 
         // required by Phaser 3
         function create() {
@@ -273,16 +293,18 @@ class PhaserContainer extends Component {
 
     }
 
-    phaserTest() {
-        console.log("Phaser Test!");
-    }
+    // phaserTest() {
+    //     console.log("Phaser Test!");
+    // }
 
     render() {
         return (
-            <div id="phaser-container"></div>
+            <Wrapper>
+                <Scoreboard score={this.state.score} life={this.state.life}/>
+                <div id="phaser-container"></div>
+            </Wrapper>
         );
     }
-
 }
 
 export default PhaserContainer;
