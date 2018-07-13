@@ -12,11 +12,9 @@ class PhaserContainer extends Component {
 
     componentDidMount() {
         this.startGame();
-
     }
 
     startGame() {
-        console.log(this); // this = PhaserContainer
         let config = {
             type: Phaser.AUTO,
             width: window.innerWidth,
@@ -51,7 +49,6 @@ class PhaserContainer extends Component {
         function attackHandler(player, lion) {
 
             if (player.immune === false && this.cursors.space.isDown) {
-                console.log(lion.hitPoints);
                 console.log("knock knock");
                 lion.hitPoints--;
                 if (lion.hitPoints === 0) {
@@ -106,22 +103,17 @@ class PhaserContainer extends Component {
         function collectCoin(sprite, tile) {
             coinLayer.removeTileAt(tile.x, tile.y); // remove the tile/coin
             score++; // add 1 point to the score
-            console.log(score);
             updateScore();
-            // text.setText("score: " + score); // set the text to show the current score
             return false;
         }
 
         // collision handler for player and enemy
         function collisionHandler(player, fly) {
-            console.log("boop");
             if (player.immune === false) {
                 console.log("boop");
                 // player.anims.play('ghost', true);
                 life--;
                 updateLife();
-                // lifeText.setText("life: " + life);
-                console.log(life);
                 if (fly.body.touching.left) {
                     fly.body.velocity.x = 150;
                     fly.flipX = false;
@@ -292,10 +284,6 @@ class PhaserContainer extends Component {
         };
 
     }
-
-    // phaserTest() {
-    //     console.log("Phaser Test!");
-    // }
 
     render() {
         return (
