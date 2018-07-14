@@ -4,26 +4,18 @@ import API from "../../utils/API";
 
 class PrivateRoute extends Component {
 
-    state = {
-        isAuthenticated: false
-    };
-
-    componentDidMount() {
-        this.getAuthStatus();
-    };
-
     async getAuthStatus() {
         let res = await API.getAuthStatus();
         console.log(res);
         let returnVal = await res.data;
         console.log(returnVal);
-        this.setState({ isAuthenticated: returnVal });
+        return returnVal;
     }
 
-    render() {
+    renderContent(isAuthenticated) {
         const { path, component } = this.props;
 
-        if (!this.state.isAuthenticated) {
+        if (isAuthenticated) {
             return (
                 <Route exact path={path} component={component} />
             );
@@ -33,6 +25,12 @@ class PrivateRoute extends Component {
                 <Redirect to="/" />
             );
         }
+    };
+
+    render() {
+        const isAuthenticated = this.getAuthStatus();
+        const content = this.renderContent(isAuthenticated);
+        return content;
     }
 }
 
