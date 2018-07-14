@@ -1,15 +1,22 @@
 import React, { Component } from "react";
+import Wrapper from "../../components/Wrapper";
+import Scoreboard from "../../components/Scoreboard";
 import Phaser from "phaser";
 
 class PhaserContainer extends Component {
 
-    componentDidMount() {
-        this.startGame();
+    state = {
+        score: 0,
+        life: 10,
+        hasMace: false
+    }
 
+    componentDidMount() {
+        console.log(this.state.hasMace);
+        this.startGame();
     }
 
     startGame() {
-        console.log(this); // this = PhaserContainer
         let config = {
             type: Phaser.AUTO,
             width: window.innerWidth,
@@ -34,15 +41,17 @@ class PhaserContainer extends Component {
         var life = 10;
         var gameOver = false;
         var score = 0;
+        var hasMace = false;
         var coins;
+        var map;
+        var groundLayer, coinLayer, bgGroundLayer, weaponLayer;
 
         // this.game = new Phaser.Game(config);
         this.game = new Phaser.Game(config);
 
         function attackHandler(player, lion) {
 
-            if (player.immune === false && this.cursors.space.isDown) {
-                console.log(lion.hitPoints);
+            if (player.immune === false && hasMace === true && this.cursors.space.isDown) {
                 console.log("knock knock");
                 lion.hitPoints--;
                 if (lion.hitPoints === 0) {
@@ -51,7 +60,8 @@ class PhaserContainer extends Component {
                     coins = this.physics.add.group({
                         key: 'coin',
                         repeat: 9,
-                        setXY: { x: lion.x - 350, y: lion.y - 100, stepX: 70 }
+                        setXY: { x: lion.x - 350, y: lion.y - 100, stepX: 70 },
+                        collideWorldBounds: true
                     });
 
                     coins.children.iterate(function (child) {
@@ -96,21 +106,27 @@ class PhaserContainer extends Component {
         // collect coin
         function collectCoin(sprite, tile) {
             coinLayer.removeTileAt(tile.x, tile.y); // remove the tile/coin
+            console.log("Collecting a coin!");
             score++; // add 1 point to the score
-            console.log(score);
-            // text.setText("score: " + score); // set the text to show the current score
+            updateScore();
             return false;
+        }
+
+        function collectWeapon(sprite, tile) {
+            weaponLayer.removeTileAt(tile.x, tile.y); // remove the tile/weapon
+            console.log("got you");
+            this.player.anims.play('mace', true);
+            hasMace = true;
+            updateWeapon();
         }
 
         // collision handler for player and enemy
         function collisionHandler(player, fly) {
-            console.log("boop");
             if (player.immune === false) {
                 console.log("boop");
                 // player.anims.play('ghost', true);
                 life--;
-                // lifeText.setText("life: " + life);
-                console.log(life);
+                updateLife();
                 if (fly.body.touching.left) {
                     fly.body.velocity.x = 150;
                     fly.flipX = false;
@@ -140,6 +156,24 @@ class PhaserContainer extends Component {
             return false;
         }
 
+        // arrow function to update score in state
+        var updateScore = () => {
+            this.setState({ score: score });
+            console.log("State score: " + this.state.score);
+        }
+
+        // arrow function to update life in state
+        var updateLife = () => {
+            this.setState({ life: life });
+            console.log("State life: " + this.state.life);
+        }
+
+        // arrow function to update weapon in state
+        var updateWeapon = () => {
+            this.setState({ hasMace: true });
+            console.log("State weapon: " + this.state.hasMace);
+        }
+
         function preload() {
             // map made with Tiled in JSON format
             this.load.tilemapTiledJSON('map', 'assets/game/maps/map.json');
@@ -149,21 +183,15 @@ class PhaserContainer extends Component {
             this.load.image('coin', 'assets/game/npc/coin.png');
             // simple Gilgamesh cat
             this.load.image('gilgamesh', 'assets/game/character/gilgamesh.png');
+            // simple Gilgamesh cat with mact
+            this.load.spritesheet('gilgamesh-mace', 'assets/game/character/gilgamesh-mace.png', { frameWidth: 96, frameHeight: 90 });
             // enemy fly spritesheet
             this.load.spritesheet('enemy', 'assets/game/npc/fly-spritesheet.png', { frameWidth: 70, frameHeight: 40 });
             // citizen lion
             this.load.image('lion', 'assets/game/npc/lion.png');
+            // mace weapon
+            this.load.image('mace', 'assets/game/weapon/mace.png');
         }
-
-        // test function that calls PhaserContainer method phaserTest
-        var arrowTest = () => {
-            this.phaserTest();
-        }
-
-        arrowTest();
-
-        let map;
-        let groundLayer, coinLayer;
 
         // required by Phaser 3
         function create() {
@@ -171,6 +199,9 @@ class PhaserContainer extends Component {
             // load Tiled map
             map = this.make.tilemap({ key: 'map' });
             this.cameras.main.setBackgroundColor('#b4c3d1');
+
+            let bgGroundTiles = map.addTilesetImage('ground-tileset');
+            bgGroundLayer = map.createDynamicLayer('BG-Ground', bgGroundTiles, 0, 0);
 
             // load tiles for ground layer
             let groundTiles = map.addTilesetImage('ground-tileset');
@@ -180,6 +211,11 @@ class PhaserContainer extends Component {
             // set the boundaries of our game world
             this.physics.world.bounds.width = groundLayer.width;
             this.physics.world.bounds.height = groundLayer.height;
+
+            // WEAPON
+            var weaponTiles = map.addTilesetImage('mace');
+            weaponLayer = map.createDynamicLayer('Weapon', weaponTiles, 0, 0);
+            weaponLayer.setTileIndexCallback(227, collectWeapon, this);
 
             // COIN
             var coinTiles = map.addTilesetImage('coin');
@@ -202,14 +238,17 @@ class PhaserContainer extends Component {
             this.player.immune = false;
             this.physics.add.collider(groundLayer, this.player);
             this.physics.add.overlap(this.player, coinLayer);
+            this.physics.add.overlap(this.player, weaponLayer);
             this.physics.add.overlap(this.player, this.lion, attackHandler, null, this);
 
 
             // ENEMY FLY
-            this.fly = this.physics.add.sprite(50, 550, 'enemy');
+            this.fly = this.physics.add.sprite(500, 380, 'enemy');
             this.fly.setCollideWorldBounds(true);
             this.fly.body.setVelocityX(100);
             this.fly.body.setSize(this.fly.width, this.fly.height + 20);
+            this.fly.body.gravity.y = -800;
+            console.log(this);
             this.physics.add.collider(groundLayer, this.fly);
 
             // fly animation
@@ -219,6 +258,14 @@ class PhaserContainer extends Component {
                 frameRate: 7,
                 repeat: -1
             });
+
+            // mace animation
+            this.anims.create({
+                key: 'mace',
+                frames: this.anims.generateFrameNumbers('gilgamesh-mace', { start: 0, end: 0 }),
+                frameRate: 7,
+                repeat: -1
+            })
 
             // enemy collides with player
             this.physics.add.overlap(this.player, this.fly, collisionHandler, null, this);
@@ -273,16 +320,14 @@ class PhaserContainer extends Component {
 
     }
 
-    phaserTest() {
-        console.log("Phaser Test!");
-    }
-
     render() {
         return (
-            <div id="phaser-container"></div>
+            <Wrapper>
+                <Scoreboard score={this.state.score} life={this.state.life} hasMace={!this.state.hasMace ? 'false' : 'true'} />
+                <div id="phaser-container"></div>
+            </Wrapper>
         );
     }
-
 }
 
 export default PhaserContainer;
