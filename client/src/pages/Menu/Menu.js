@@ -1,14 +1,18 @@
 import React, { Component } from "react";
 import Wrapper from "../../components/Wrapper";
 import { Row, Column } from "../../components/Bootstrap";
-import { UserMenu, ProgressContainer } from "../../components/MenuPage";
+import { UserMenu, Progress, Achievements, AchievementsContainer } from "../../components/MenuPage";
 import API from "../../utils/API";
+import badges from "./badges.json";
+import weapons from "./weapons.json";
 
 class Menu extends Component {
 
   state = {
     user: {},
-    achievement: {}
+    achievement: {},
+    badges: badges,
+    weapons: weapons,
   };
 
   componentDidMount() {
@@ -28,7 +32,8 @@ class Menu extends Component {
     API.getAchievements()
       .then(res => {
         this.setState({ achievement: res.data.achievement });
-        console.log(this.state);
+        // console.log(this.state);
+        this.checkAchievement();
       })
       .catch(err => console.log(err));
   };
@@ -45,7 +50,23 @@ class Menu extends Component {
       .catch(err => console.log(err));
   };
 
+  checkAchievement = () => {
+    Object.keys(this.state.achievement).forEach(key => {
+      Object.keys(this.state.badges).forEach(token => {
+        if (key === this.state.badges[token].name) {
+          this.state.badges[token].earned = this.state.achievement[key]
+        }
+      });
+      Object.keys(this.state.weapons).forEach(token => {
+        if (key === this.state.weapons[token].name) {
+          this.state.weapons[token].earned = this.state.achievement[key]
+        }
+      });
+    });
+  };
+
   render() {
+    this.getAchievements();
     return (
       <Wrapper>
         <Row>
@@ -53,7 +74,29 @@ class Menu extends Component {
             <UserMenu user={this.state.user} onClick={this.signoutUser} />
           </Column>
           <Column size="col-md-9">
-            <ProgressContainer />
+            <Progress />
+            <AchievementsContainer
+              title="Achievements">
+              {this.state.badges.map(badge => (
+                <Achievements
+                  key={badge.id}
+                  image={badge.image}
+                  name={badge.name}
+                  className={badge.earned ? 'badge-container badge-earned' : 'badge-container'}
+                />
+              ))}
+            </AchievementsContainer>
+            <AchievementsContainer
+              title="Weapons">
+              {this.state.weapons.map(weapon => (
+                <Achievements
+                  key={weapon.id}
+                  image={weapon.image}
+                  name={weapon.name}
+                  className={weapon.earned ? 'badge-container badge-earned' : 'badge-container'}
+                />
+              ))}
+            </AchievementsContainer>
           </Column>
         </Row>
       </Wrapper>
