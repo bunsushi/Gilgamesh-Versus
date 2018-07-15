@@ -53,8 +53,8 @@ class PhaserContainer extends Component {
 
             if (player.immune === false && hasMace === true && this.cursors.space.isDown) {
                 console.log("knock knock");
-                lion.hitPoints--;
-                if (lion.hitPoints === 0) {
+                lion.hitPoints--; // make this more random
+                if (lion.hitPoints === 0) { // <= 0
                     console.log("moneyyyy");
                     //  Some coins to collect, 10 in total, evenly spaced 70 pixels apart along the x axis
                     coins = this.physics.add.group({

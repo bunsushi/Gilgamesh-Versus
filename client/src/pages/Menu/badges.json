@@ -1,42 +1,39 @@
 [
     {
         "id": 0,
-        "name": "shield-03",
+        "name": "achvShield",
         "image": "/assets/images/achievements/003-shield.png"
     },
     {
         "id": 1,
-        "name": "trophy-22",
+        "name": "achvTrophy22",
         "image": "/assets/images/achievements/005-trophy-22.png"
     },
     {
         "id": 2,
-        "name": "cup-15",
+        "name": "achvCup",
         "image": "/assets/images/achievements/015-cup.png"
     },
     {
         "id": 3,
-        "name": "trophy-14",
+        "name": "achvTrophy14",
         "image": "/assets/images/achievements/021-trophy-14.png"
     },
     {
         "id": 4,
-        "name": "trophy-13",
+        "name": "achvTrophy13",
         "image": "/assets/images/achievements/022-trophy-13.png"
     },
     {
         "id": 5,
-        "name": "trophy-12",
-        "image": "/assets/images/achievements/023-trophy-12.png"
-    },
+        "name": "achvTrophy12",
+        "image": "/assets/images/achievements/023-trophy-12.png"    },
     {
         "id": 6,
-        "name": "medal-05",
-        "image": "/assets/images/achievements/028-medal-5.png"
-    },
+        "name": "achvMedal5",
+        "image": "/assets/images/achievements/028-medal-5.png"    },
     {
         "id": 7,
-        "name": "ribbon-33",
-        "image": "/assets/images/achievements/033-ribbon.png"
-    }
+        "name": "achvRibbon",
+        "image": "/assets/images/achievements/033-ribbon.png"    }
 ]
