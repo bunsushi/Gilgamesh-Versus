@@ -2,49 +2,38 @@
     {
         "id": 0,
         "name": "achvShield",
-        "image": "/assets/images/achievements/003-shield.png",
-        "earned": false
+        "image": "/assets/images/achievements/003-shield.png"
     },
     {
         "id": 1,
         "name": "achvTrophy22",
-        "image": "/assets/images/achievements/005-trophy-22.png",
-        "earned": false
+        "image": "/assets/images/achievements/005-trophy-22.png"
     },
     {
         "id": 2,
         "name": "achvCup",
-        "image": "/assets/images/achievements/015-cup.png",
-        "earned": false
+        "image": "/assets/images/achievements/015-cup.png"
     },
     {
         "id": 3,
         "name": "achvTrophy14",
-        "image": "/assets/images/achievements/021-trophy-14.png",
-        "earned": false
+        "image": "/assets/images/achievements/021-trophy-14.png"
     },
     {
         "id": 4,
         "name": "achvTrophy13",
-        "image": "/assets/images/achievements/022-trophy-13.png",
-        "earned": false
+        "image": "/assets/images/achievements/022-trophy-13.png"
     },
     {
         "id": 5,
         "name": "achvTrophy12",
-        "image": "/assets/images/achievements/023-trophy-12.png",
-        "earned": false
-    },
+        "image": "/assets/images/achievements/023-trophy-12.png"    },
     {
         "id": 6,
         "name": "achvMedal5",
-        "image": "/assets/images/achievements/028-medal-5.png",
-        "earned": false
-    },
+        "image": "/assets/images/achievements/028-medal-5.png"    },
     {
         "id": 7,
         "name": "achvRibbon",
-        "image": "/assets/images/achievements/033-ribbon.png",
-        "earned": false
-    }
+        "image": "/assets/images/achievements/033-ribbon.png"    }
 ]
