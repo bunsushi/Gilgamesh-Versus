@@ -19,7 +19,7 @@ class PhaserContainer extends Component {
     startGame() {
         let config = {
             type: Phaser.AUTO,
-            width: window.innerWidth,
+            width: 1270,
             height: 700,
             parent: 'phaser-container',
             physics: {
@@ -37,16 +37,6 @@ class PhaserContainer extends Component {
             }
         };
 
-        // game variables
-        var life = 10;
-        var gameOver = false;
-        var score = 0;
-        var hasMace = false;
-        var coins;
-        var map;
-        var groundLayer, coinLayer, bgGroundLayer, weaponLayer;
-
-        // this.game = new Phaser.Game(config);
         this.game = new Phaser.Game(config);
 
         function attackHandler(player, lion) {
@@ -149,6 +139,15 @@ class PhaserContainer extends Component {
             }
         };
 
+        function dangerHandler(player, dangerLayer) {
+            console.log("Ow!");
+            setTimeout(function () {
+                gameOver = true;
+            }, 500);
+
+            checkForLoss();
+        }
+
         // this function will be called when the player touches a coin
         function robNPC(player, coin) {
             coin.disableBody(true, true); // remove the tile/coin
@@ -174,23 +173,29 @@ class PhaserContainer extends Component {
             console.log("State weapon: " + this.state.hasMace);
         }
 
+        // game variables
+        var life = 10;
+        var gameOver = false;
+        var score = 0;
+        var hasMace = false;
+        var coins;
+        var map;
+        var groundLayer, coinLayer, bgGroundLayer, weaponLayer, buildingLayer, dangerLayer;
+
         function preload() {
-            // map made with Tiled in JSON format
+            // LOAD FROM TILED MAP
             this.load.tilemapTiledJSON('map', 'assets/game/maps/map.json');
-            // ground tiles in spritesheet
             this.load.spritesheet('ground-tileset', 'assets/game/maps/ground-tileset.png', { frameWidth: 70, frameHeight: 70 });
-            // simple coin image
+            this.load.spritesheet('building-tileset', 'assets/game/maps/building-tileset.png', { frameWidth: 70, frameHeight: 70 });
+            this.load.spritesheet('danger', 'assets/game/maps/danger.png', { frameWidth: 70, frameHeight: 70 });
             this.load.image('coin', 'assets/game/npc/coin.png');
-            // simple Gilgamesh cat
-            this.load.image('gilgamesh', 'assets/game/character/gilgamesh.png');
-            // simple Gilgamesh cat with mact
-            this.load.spritesheet('gilgamesh-mace', 'assets/game/character/gilgamesh-mace.png', { frameWidth: 96, frameHeight: 90 });
-            // enemy fly spritesheet
-            this.load.spritesheet('enemy', 'assets/game/npc/fly-spritesheet.png', { frameWidth: 70, frameHeight: 40 });
-            // citizen lion
-            this.load.image('lion', 'assets/game/npc/lion.png');
-            // mace weapon
             this.load.image('mace', 'assets/game/weapon/mace.png');
+
+            // LOAD FROM IMAGE
+            this.load.image('gilgamesh', 'assets/game/character/gilgamesh.png');
+            this.load.spritesheet('gilgamesh-mace', 'assets/game/character/gilgamesh-mace.png', { frameWidth: 96, frameHeight: 90 });
+            this.load.spritesheet('enemy', 'assets/game/npc/fly-spritesheet.png', { frameWidth: 70, frameHeight: 40 });
+            this.load.image('lion', 'assets/game/npc/lion.png');
         }
 
         // required by Phaser 3
@@ -207,6 +212,17 @@ class PhaserContainer extends Component {
             let groundTiles = map.addTilesetImage('ground-tileset');
             groundLayer = map.createDynamicLayer('Ground', groundTiles, 0, 0);
             groundLayer.setCollisionByExclusion([-1]);
+
+            // load tiles for building layer
+            let buildingTiles = map.addTilesetImage('building-tileset');
+            buildingLayer = map.createDynamicLayer('Building', buildingTiles, 0, 0);
+
+            let dangerTiles = map.addTilesetImage('danger');
+            dangerLayer = map.createDynamicLayer('Danger', dangerTiles, 0, 0);
+            dangerLayer.setTileIndexCallback(288, dangerHandler, this);
+            dangerLayer.setTileIndexCallback(289, dangerHandler, this);
+            dangerLayer.setTileIndexCallback(290, dangerHandler, this);
+            dangerLayer.setTileIndexCallback(291, dangerHandler, this);
 
             // set the boundaries of our game world
             this.physics.world.bounds.width = groundLayer.width;
@@ -239,8 +255,8 @@ class PhaserContainer extends Component {
             this.physics.add.collider(groundLayer, this.player);
             this.physics.add.overlap(this.player, coinLayer);
             this.physics.add.overlap(this.player, weaponLayer);
+            this.physics.add.overlap(this.player, dangerLayer);
             this.physics.add.overlap(this.player, this.lion, attackHandler, null, this);
-
 
             // ENEMY FLY
             this.fly = this.physics.add.sprite(500, 380, 'enemy');
@@ -270,6 +286,8 @@ class PhaserContainer extends Component {
             // enemy collides with player
             this.physics.add.overlap(this.player, this.fly, collisionHandler, null, this);
 
+            this.cameras.main.setBounds(0, 0, map.widthInPixels, map.heightInPixels); // keep camera in bounds of world
+            this.cameras.main.startFollow(this.player); // camera follow player
 
             // CREATE CURSORS KEYS
             this.cursors = this.input.keyboard.createCursorKeys();

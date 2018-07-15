@@ -66,7 +66,7 @@ class Menu extends Component {
   };
 
   render() {
-    this.getAchievements();
+    this.checkAchievement();
     return (
       <Wrapper>
         <Row>
