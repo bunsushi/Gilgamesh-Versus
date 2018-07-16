@@ -8,6 +8,7 @@ class PhaserContainer extends Component {
 
     state = {
         user: {},
+        achievements: {},
         score: 0,
         life: 3,
         hasMace: false
@@ -15,6 +16,7 @@ class PhaserContainer extends Component {
 
     componentDidMount() {
         this.getUser();
+        this.getAchievements();
         this.startGame();
     }
 
@@ -22,9 +24,17 @@ class PhaserContainer extends Component {
         API.getUser()
             .then(res => {
                 this.setState(res.data);
-                console.log(this.state);
             })
             .catch(err => console.log(err));
+    };
+
+    getAchievements = () => {
+        API.getAchievements()
+          .then(res => {
+              this.setState({ achievement: res.data.achievement });
+              console.log(this.state);
+          })
+          .catch(err => console.log(err));
     }
 
     startGame() {
@@ -111,6 +121,20 @@ class PhaserContainer extends Component {
             score++; // add 1 point to the score
             updateScore();
             return false;
+        };
+
+        // collect key
+        function collectKey() {
+            // change this to if has attacked all NPCs
+            if (hasMace) {
+                console.log("You've won!");
+                // push hasMace to DB
+                // weapMace = true
+
+            }
+            else {
+                return;
+            }
         }
 
         function collectWeapon(sprite, tile) {
@@ -190,7 +214,7 @@ class PhaserContainer extends Component {
         var hasMace = false;
         var coins;
         var map;
-        var groundLayer, coinLayer, bgGroundLayer, weaponLayer, buildingLayer, bgBuildingLayer, dangerLayer;
+        var groundLayer, coinLayer, bgGroundLayer, weaponLayer, buildingLayer, bgBuildingLayer, dangerLayer, keyLayer;
 
         function preload() {
             // LOAD FROM TILED MAP
@@ -200,6 +224,7 @@ class PhaserContainer extends Component {
             this.load.spritesheet('danger', 'assets/game/maps/danger.png', { frameWidth: 70, frameHeight: 70 });
             this.load.image('coin', 'assets/game/npc/coin.png');
             this.load.image('mace', 'assets/game/weapon/mace.png');
+            this.load.image('keyYellow', 'assets/game/keys/keyYellow.png');
 
             // LOAD FROM IMAGE
             this.load.image('gilgamesh', 'assets/game/character/gilgamesh.png');
@@ -241,6 +266,11 @@ class PhaserContainer extends Component {
             this.physics.world.bounds.width = groundLayer.width;
             this.physics.world.bounds.height = groundLayer.height;
 
+            // KEY
+            var keyTiles = map.addTilesetImage('keyYellow');
+            keyLayer = map.createDynamicLayer('Key', keyTiles, 0, 0);
+            keyLayer.setTileIndexCallback(292, collectKey, this);
+
             // WEAPON
             var weaponTiles = map.addTilesetImage('mace');
             weaponLayer = map.createDynamicLayer('Weapon', weaponTiles, 0, 0);
@@ -269,6 +299,7 @@ class PhaserContainer extends Component {
             this.physics.add.overlap(this.player, coinLayer);
             this.physics.add.overlap(this.player, weaponLayer);
             this.physics.add.collider(dangerLayer, this.player);
+            this.physics.add.overlap(keyLayer, this.player);
             this.physics.add.overlap(this.player, this.lion, attackHandler, null, this);
 
             // ENEMY FLY #1
