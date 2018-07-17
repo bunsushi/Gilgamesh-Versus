@@ -30,11 +30,11 @@ class PhaserContainer extends Component {
 
     getAchievements = () => {
         API.getAchievements()
-          .then(res => {
-              this.setState({ achievement: res.data.achievement });
-              console.log(this.state);
-          })
-          .catch(err => console.log(err));
+            .then(res => {
+                this.setState({ achievement: res.data.achievement });
+                console.log(this.state);
+            })
+            .catch(err => console.log(err));
     }
 
     setAchievements = (id, achvObj) => {
@@ -71,6 +71,7 @@ class PhaserContainer extends Component {
         function attackHandler(player, lion) {
 
             if (player.immune === false && hasMace === true && this.cursors.space.isDown) {
+                this.sound.play('maceSwing'); // play maceSwing
                 console.log("knock knock");
                 lion.hitPoints--; // make this more random
                 if (lion.hitPoints === 0) { // <= 0
@@ -124,6 +125,7 @@ class PhaserContainer extends Component {
 
         // collect coin
         function collectCoin(sprite, tile) {
+            this.sound.play('coinCollect'); // play coinCollect
             coinLayer.removeTileAt(tile.x, tile.y); // remove the tile/coin
             console.log("Collecting a coin!");
             score++; // add 1 point to the score
@@ -153,6 +155,7 @@ class PhaserContainer extends Component {
         }
 
         function collectWeapon(sprite, tile) {
+            this.sound.play('maceCollect'); // play maceCollect
             weaponLayer.removeTileAt(tile.x, tile.y); // remove the tile/weapon
             console.log("got you");
             this.player.anims.play('mace', true);
@@ -199,6 +202,7 @@ class PhaserContainer extends Component {
 
         // called when the player touches a coin
         function robNPC(player, coin) {
+            this.sound.play('coinCollect'); // play coinCollect
             coin.disableBody(true, true); // remove the tile/coin
             score++; // add 1 point to the score
             return false;
@@ -246,6 +250,12 @@ class PhaserContainer extends Component {
             this.load.spritesheet('gilgamesh-mace', 'assets/game/character/gilgamesh-mace.png', { frameWidth: 96, frameHeight: 90 });
             this.load.spritesheet('enemy', 'assets/game/npc/fly-spritesheet.png', { frameWidth: 70, frameHeight: 40 });
             this.load.image('lion', 'assets/game/npc/lion.png');
+
+            // sound effects
+            this.load.audio('coinCollect', 'assets/game/sounds/handleCoins2.wav');
+            this.load.audio('maceCollect', 'assets/game/sounds/drawKnife3.wav');
+
+            this.load.audio('maceSwing', 'assets/game/sounds/phaserUp4.wav');
         }
 
         // required by Phaser 3
@@ -288,6 +298,8 @@ class PhaserContainer extends Component {
 
             // WEAPON
             var weaponTiles = map.addTilesetImage('mace');
+            this.sound.add('maceCollect');
+            this.sound.add('phaserUp4');
             weaponLayer = map.createDynamicLayer('Weapon', weaponTiles, 0, 0);
             weaponLayer.setTileIndexCallback(227, collectWeapon, this);
 
@@ -295,6 +307,7 @@ class PhaserContainer extends Component {
             var coinTiles = map.addTilesetImage('coin');
             coinLayer = map.createDynamicLayer('Coin', coinTiles, 0, 0);
             coinLayer.setTileIndexCallback(226, collectCoin, this);
+            this.sound.add('coinCollect');
 
             // LION
             this.lion = this.physics.add.sprite(2000, 550, 'lion');
