@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { withRouter } from "react-router-dom";
 import Wrapper from "../../components/Wrapper";
 import Scoreboard from "../../components/Scoreboard";
 import API from "../../utils/API";
@@ -135,6 +136,9 @@ class PhaserContainer extends Component {
             var id = this.state.user.achievement;
             var achvObj = { weapMace: true };
             this.setAchievements(id, achvObj);
+
+            // now go to /Menu page
+            this.props.history.push("/menu");
         };
 
         // collect key
@@ -434,4 +438,4 @@ class PhaserContainer extends Component {
     }
 }
 
-export default PhaserContainer;
+export default withRouter(PhaserContainer);
