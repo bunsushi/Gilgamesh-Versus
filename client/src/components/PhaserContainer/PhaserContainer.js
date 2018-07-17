@@ -1,25 +1,46 @@
 import React, { Component } from "react";
 import Wrapper from "../../components/Wrapper";
 import Scoreboard from "../../components/Scoreboard";
+import API from "../../utils/API";
 import Phaser from "phaser";
 
 class PhaserContainer extends Component {
 
     state = {
+        user: {},
+        achievement: {},
         score: 0,
-        life: 10,
+        life: 3,
         hasMace: false
     }
 
     componentDidMount() {
-        console.log(this.state.hasMace);
+        this.getUser();
+        this.getAchievements();
         this.startGame();
+    }
+
+    getUser = () => {
+        API.getUser()
+            .then(res => {
+                this.setState(res.data);
+            })
+            .catch(err => console.log(err));
+    };
+
+    getAchievements = () => {
+        API.getAchievements()
+          .then(res => {
+              this.setState({ achievement: res.data.achievement });
+              console.log(this.state);
+          })
+          .catch(err => console.log(err));
     }
 
     startGame() {
         let config = {
             type: Phaser.AUTO,
-            width: window.innerWidth,
+            width: 1270,
             height: 700,
             parent: 'phaser-container',
             physics: {
@@ -37,16 +58,6 @@ class PhaserContainer extends Component {
             }
         };
 
-        // game variables
-        var life = 10;
-        var gameOver = false;
-        var score = 0;
-        var hasMace = false;
-        var coins;
-        var map;
-        var groundLayer, coinLayer, bgGroundLayer, weaponLayer;
-
-        // this.game = new Phaser.Game(config);
         this.game = new Phaser.Game(config);
 
         function attackHandler(player, lion) {
@@ -110,6 +121,20 @@ class PhaserContainer extends Component {
             score++; // add 1 point to the score
             updateScore();
             return false;
+        };
+
+        // collect key
+        function collectKey() {
+            // change this to if has attacked all NPCs
+            if (hasMace) {
+                console.log("You've won!");
+                // push hasMace to DB
+                // weapMace = true
+
+            }
+            else {
+                return;
+            }
         }
 
         function collectWeapon(sprite, tile) {
@@ -149,7 +174,15 @@ class PhaserContainer extends Component {
             }
         };
 
-        // this function will be called when the player touches a coin
+        // called when player touches a dangerous tile (water, spikes)
+        function dangerHandler(player, dangerLayer) {
+            console.log("Ow!");
+            setTimeout(function () {
+                gameOver = true;
+            }, 500);
+        }
+
+        // called when the player touches a coin
         function robNPC(player, coin) {
             coin.disableBody(true, true); // remove the tile/coin
             score++; // add 1 point to the score
@@ -174,23 +207,30 @@ class PhaserContainer extends Component {
             console.log("State weapon: " + this.state.hasMace);
         }
 
+        // game variables
+        var life = 3;
+        var gameOver = false;
+        var score = 0;
+        var hasMace = false;
+        var coins;
+        var map;
+        var groundLayer, coinLayer, bgGroundLayer, weaponLayer, buildingLayer, bgBuildingLayer, dangerLayer, keyLayer;
+
         function preload() {
-            // map made with Tiled in JSON format
+            // LOAD FROM TILED MAP
             this.load.tilemapTiledJSON('map', 'assets/game/maps/map.json');
-            // ground tiles in spritesheet
             this.load.spritesheet('ground-tileset', 'assets/game/maps/ground-tileset.png', { frameWidth: 70, frameHeight: 70 });
-            // simple coin image
+            this.load.spritesheet('building-tileset', 'assets/game/maps/building-tileset.png', { frameWidth: 70, frameHeight: 70 });
+            this.load.spritesheet('danger', 'assets/game/maps/danger.png', { frameWidth: 70, frameHeight: 70 });
             this.load.image('coin', 'assets/game/npc/coin.png');
-            // simple Gilgamesh cat
-            this.load.image('gilgamesh', 'assets/game/character/gilgamesh.png');
-            // simple Gilgamesh cat with mact
-            this.load.spritesheet('gilgamesh-mace', 'assets/game/character/gilgamesh-mace.png', { frameWidth: 96, frameHeight: 90 });
-            // enemy fly spritesheet
-            this.load.spritesheet('enemy', 'assets/game/npc/fly-spritesheet.png', { frameWidth: 70, frameHeight: 40 });
-            // citizen lion
-            this.load.image('lion', 'assets/game/npc/lion.png');
-            // mace weapon
             this.load.image('mace', 'assets/game/weapon/mace.png');
+            this.load.image('keyYellow', 'assets/game/keys/keyYellow.png');
+
+            // LOAD FROM IMAGE
+            this.load.image('gilgamesh', 'assets/game/character/gilgamesh.png');
+            this.load.spritesheet('gilgamesh-mace', 'assets/game/character/gilgamesh-mace.png', { frameWidth: 96, frameHeight: 90 });
+            this.load.spritesheet('enemy', 'assets/game/npc/fly-spritesheet.png', { frameWidth: 70, frameHeight: 40 });
+            this.load.image('lion', 'assets/game/npc/lion.png');
         }
 
         // required by Phaser 3
@@ -208,9 +248,28 @@ class PhaserContainer extends Component {
             groundLayer = map.createDynamicLayer('Ground', groundTiles, 0, 0);
             groundLayer.setCollisionByExclusion([-1]);
 
+            let bgBuildingTiles = map.addTilesetImage('building-tileset');
+            bgBuildingLayer = map.createDynamicLayer('BG-Building', bgBuildingTiles, 0, 0);
+
+            // load tiles for building layer
+            let buildingTiles = map.addTilesetImage('building-tileset');
+            buildingLayer = map.createDynamicLayer('Building', buildingTiles, 0, 0);
+
+            let dangerTiles = map.addTilesetImage('danger');
+            dangerLayer = map.createDynamicLayer('Danger', dangerTiles, 0, 0);
+            dangerLayer.setTileIndexCallback(288, dangerHandler, this);
+            dangerLayer.setTileIndexCallback(289, dangerHandler, this);
+            dangerLayer.setTileIndexCallback(290, dangerHandler, this);
+            dangerLayer.setTileIndexCallback(291, dangerHandler, this);
+
             // set the boundaries of our game world
             this.physics.world.bounds.width = groundLayer.width;
             this.physics.world.bounds.height = groundLayer.height;
+
+            // KEY
+            var keyTiles = map.addTilesetImage('keyYellow');
+            keyLayer = map.createDynamicLayer('Key', keyTiles, 0, 0);
+            keyLayer.setTileIndexCallback(292, collectKey, this);
 
             // WEAPON
             var weaponTiles = map.addTilesetImage('mace');
@@ -223,9 +282,9 @@ class PhaserContainer extends Component {
             coinLayer.setTileIndexCallback(226, collectCoin, this);
 
             // LION
-            this.lion = this.physics.add.sprite(550, 550, 'lion');
+            this.lion = this.physics.add.sprite(2000, 550, 'lion');
             this.lion.setCollideWorldBounds(true);
-            // this.lion.body.setVelocityX(100);
+            this.lion.body.setVelocityX(100);
             this.lion.body.setSize(this.lion.width, this.lion.height - 8);
             this.lion.hitPoints = 3;
             this.physics.add.collider(groundLayer, this.lion);
@@ -239,17 +298,25 @@ class PhaserContainer extends Component {
             this.physics.add.collider(groundLayer, this.player);
             this.physics.add.overlap(this.player, coinLayer);
             this.physics.add.overlap(this.player, weaponLayer);
+            this.physics.add.collider(dangerLayer, this.player);
+            this.physics.add.overlap(keyLayer, this.player);
             this.physics.add.overlap(this.player, this.lion, attackHandler, null, this);
 
-
-            // ENEMY FLY
+            // ENEMY FLY #1
             this.fly = this.physics.add.sprite(500, 380, 'enemy');
             this.fly.setCollideWorldBounds(true);
             this.fly.body.setVelocityX(100);
             this.fly.body.setSize(this.fly.width, this.fly.height + 20);
             this.fly.body.gravity.y = -800;
-            console.log(this);
             this.physics.add.collider(groundLayer, this.fly);
+
+            // ENEMY FLY #2
+            this.fly2 = this.physics.add.sprite(1500, 180, 'enemy');
+            this.fly2.setCollideWorldBounds(true);
+            this.fly2.body.setVelocityX(150);
+            this.fly2.body.setSize(this.fly2.width, this.fly2.height + 20);
+            this.fly2.body.gravity.y = -800;
+            this.physics.add.collider(groundLayer, this.fly2);
 
             // fly animation
             this.anims.create({
@@ -270,6 +337,8 @@ class PhaserContainer extends Component {
             // enemy collides with player
             this.physics.add.overlap(this.player, this.fly, collisionHandler, null, this);
 
+            this.cameras.main.setBounds(0, 0, map.widthInPixels, map.heightInPixels); // keep camera in bounds of world
+            this.cameras.main.startFollow(this.player); // camera follow player
 
             // CREATE CURSORS KEYS
             this.cursors = this.input.keyboard.createCursorKeys();
@@ -280,6 +349,7 @@ class PhaserContainer extends Component {
         function update() {
 
             this.fly.anims.play('fly', true);
+            this.fly2.anims.play('fly', true);
 
             if (gameOver) {
                 window.location.reload();
@@ -305,25 +375,44 @@ class PhaserContainer extends Component {
                 this.player.body.setVelocityY(-500);
             }
 
-            // if player touches right side of fly
+            // FLY BLOCKED BY WORLD BOUNDS
             if (this.fly.body.blocked.right) {
                 this.fly.body.setVelocityX(-100);
                 this.fly.flipX = true;
             }
-
-            // if player touches left side of fly
             if (this.fly.body.blocked.left) {
                 this.fly.body.setVelocityX(100);
                 this.fly.flipX = false;
+            }
+
+            // FLY BLOCKED BY WORLD BOUNDS
+            if (this.fly2.body.blocked.right) {
+                this.fly2.body.setVelocityX(-100);
+                this.fly2.flipX = true;
+            }
+            if (this.fly2.body.blocked.left) {
+                this.fly2.body.setVelocityX(100);
+                this.fly2.flipX = false;
+            }
+
+            // LION BLOCKED BY WORLD BOUNDS
+            if (this.lion.body.blocked.right) {
+                this.lion.body.setVelocityX(-100);
+                this.lion.flipX = true;
+            }
+            if (this.lion.body.blocked.left) {
+                this.lion.body.setVelocityX(100);
+                this.lion.flipX = false;
             }
         };
 
     }
 
     render() {
+
         return (
             <Wrapper>
-                <Scoreboard score={this.state.score} life={this.state.life} hasMace={!this.state.hasMace ? 'false' : 'true'} />
+                <Scoreboard user={this.state.user.username} score={this.state.score} life={this.state.life} hasMace={!this.state.hasMace ? 'false' : 'true'} />
                 <div id="phaser-container"></div>
             </Wrapper>
         );
