@@ -8,7 +8,7 @@ class PhaserContainer extends Component {
 
     state = {
         user: {},
-        achievements: {},
+        achievement: {},
         score: 0,
         life: 3,
         hasMace: false
