@@ -30,11 +30,11 @@ class PhaserContainer extends Component {
 
     getAchievements = () => {
         API.getAchievements()
-          .then(res => {
-              this.setState({ achievement: res.data.achievement });
-              console.log(this.state);
-          })
-          .catch(err => console.log(err));
+            .then(res => {
+                this.setState({ achievement: res.data.achievement });
+                console.log(this.state);
+            })
+            .catch(err => console.log(err));
     }
 
     startGame() {
@@ -116,6 +116,7 @@ class PhaserContainer extends Component {
 
         // collect coin
         function collectCoin(sprite, tile) {
+            this.sound.play('coinCollect'); // play coinCollect
             coinLayer.removeTileAt(tile.x, tile.y); // remove the tile/coin
             console.log("Collecting a coin!");
             score++; // add 1 point to the score
@@ -231,6 +232,9 @@ class PhaserContainer extends Component {
             this.load.spritesheet('gilgamesh-mace', 'assets/game/character/gilgamesh-mace.png', { frameWidth: 96, frameHeight: 90 });
             this.load.spritesheet('enemy', 'assets/game/npc/fly-spritesheet.png', { frameWidth: 70, frameHeight: 40 });
             this.load.image('lion', 'assets/game/npc/lion.png');
+
+            // sound effects
+            this.load.audio('coinCollect', 'assets/game/sounds/handleCoins2.wav');
         }
 
         // required by Phaser 3
@@ -280,6 +284,7 @@ class PhaserContainer extends Component {
             var coinTiles = map.addTilesetImage('coin');
             coinLayer = map.createDynamicLayer('Coin', coinTiles, 0, 0);
             coinLayer.setTileIndexCallback(226, collectCoin, this);
+            this.sound.add('coinCollect');
 
             // LION
             this.lion = this.physics.add.sprite(2000, 550, 'lion');
