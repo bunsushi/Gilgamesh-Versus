@@ -37,6 +37,14 @@ class PhaserContainer extends Component {
             .catch(err => console.log(err));
     }
 
+    setAchievements = (id, achvObj) => {
+        API.putAchievements(id, achvObj)
+            .then(res => {
+                console.log("DB updated!");
+            })
+            .catch(err => console.log(err));
+    }
+
     startGame() {
         let config = {
             type: Phaser.AUTO,
@@ -125,6 +133,12 @@ class PhaserContainer extends Component {
             return false;
         };
 
+        var pushDB = () => {
+            var id = this.state.user.achievement;
+            var achvObj = { weapMace: true };
+            this.setAchievements(id, achvObj);
+        };
+
         // collect key
         function collectKey() {
             // change this to if has attacked all NPCs
@@ -132,6 +146,7 @@ class PhaserContainer extends Component {
                 console.log("You've won!");
                 // push hasMace to DB
                 // weapMace = true
+                pushDB();
 
             }
             else {
