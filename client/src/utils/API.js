@@ -13,6 +13,10 @@ export default {
     getAchievements: function() {
         return axios.get("/api/achievements/user");
     },
+    // Puts user achievements
+    putAchievements: function(id, achvData) {
+        return axios.put("/api/achievements/" + id, achvData);
+    },
     // Registers a new user in the DB
     signupUser: function(signupData) {
         return axios.post("/api/signup", signupData);
