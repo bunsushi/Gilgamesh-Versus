@@ -122,7 +122,6 @@ class PhaserContainer extends Component {
         function checkForLoss() {
             if (life === 0) {
                 gameOver = true;
-                triggerGameOver();
             }
         }
 
@@ -201,8 +200,7 @@ class PhaserContainer extends Component {
             console.log("Ow!");
             setTimeout(function () {
                 gameOver = true;
-                triggerGameOver();
-            }, 500);
+            }, 250);
         }
 
         // called when the player touches a coin
@@ -212,11 +210,6 @@ class PhaserContainer extends Component {
             score++; // add 1 point to the score
             return false;
         };
-
-        var triggerGameOver = () => {
-            this.setState({ gameOver: true });
-            window.location.reload();
-        }
 
         // arrow function to update score in state
         var updateScore = () => {
@@ -232,7 +225,7 @@ class PhaserContainer extends Component {
 
         // arrow function to update weapon in state
         var updateWeapon = () => {
-            this.setState({ hasMace: true });
+            this.setState({ hasMace: hasMace });
             console.log("State weapon: " + this.state.hasMace);
         }
 
@@ -389,9 +382,16 @@ class PhaserContainer extends Component {
             this.fly.anims.play('fly', true);
             this.fly2.anims.play('fly', true);
 
-            // if (gameOver) {
-            //     triggerGameOver();
-            // }
+            if (gameOver) {
+                gameOver = false;
+                score = 0;
+                life = 3;
+                hasMace = false;
+                updateScore();
+                updateLife();
+                updateWeapon();
+                this.scene.restart("main");
+            }
 
             // player move left
             if (this.cursors.left.isDown) {
