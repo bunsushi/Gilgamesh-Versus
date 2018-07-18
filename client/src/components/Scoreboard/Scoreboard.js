@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React from "react";
 
 const Scoreboard = props => (
     <nav className="navbar navbar-light">

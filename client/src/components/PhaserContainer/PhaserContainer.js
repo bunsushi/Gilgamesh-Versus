@@ -12,6 +12,7 @@ class PhaserContainer extends Component {
         achievement: {},
         score: 0,
         life: 3,
+        gameOver: false,
         hasMace: false
     }
 
@@ -204,6 +205,11 @@ class PhaserContainer extends Component {
             coin.disableBody(true, true); // remove the tile/coin
             score++; // add 1 point to the score
             return false;
+        };
+
+        var triggerGameOver = () => {
+            this.setState({ gameOver: true });
+            window.location.reload();
         }
 
         // arrow function to update score in state
@@ -369,7 +375,7 @@ class PhaserContainer extends Component {
             this.fly2.anims.play('fly', true);
 
             if (gameOver) {
-                window.location.reload();
+                triggerGameOver();
             }
 
             // player move left
