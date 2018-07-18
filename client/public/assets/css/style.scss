@@ -32,7 +32,18 @@ h1 {
 .navbar {
     font-family: $nunito;
     color: $snow;
-    margin: 15px auto;
+
+    .navbar-nav {
+        flex-direction: row;
+    }
+
+    li {
+        margin: auto 15px;
+    }
+
+    a {
+        color: $snow;
+    }
 }
 
 // Animated Gilgamesh character

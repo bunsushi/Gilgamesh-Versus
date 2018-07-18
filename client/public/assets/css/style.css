@@ -10,8 +10,13 @@ h1 {
 
 .navbar {
   font-family: "Nunito", sans-serif;
-  color: #f7f7f8;
-  margin: 15px auto; }
+  color: #f7f7f8; }
+  .navbar .navbar-nav {
+    flex-direction: row; }
+  .navbar li {
+    margin: auto 15px; }
+  .navbar a {
+    color: #f7f7f8; }
 
 #home-gilgamesh {
   position: relative;
