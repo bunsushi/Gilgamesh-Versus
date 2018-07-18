@@ -12,6 +12,7 @@ class PhaserContainer extends Component {
         achievement: {},
         score: 0,
         life: 3,
+        gameOver: false,
         hasMace: false
     }
 
@@ -199,7 +200,7 @@ class PhaserContainer extends Component {
             console.log("Ow!");
             setTimeout(function () {
                 gameOver = true;
-            }, 500);
+            }, 250);
         }
 
         // called when the player touches a coin
@@ -208,7 +209,7 @@ class PhaserContainer extends Component {
             coin.disableBody(true, true); // remove the tile/coin
             score++; // add 1 point to the score
             return false;
-        }
+        };
 
         // arrow function to update score in state
         var updateScore = () => {
@@ -224,7 +225,7 @@ class PhaserContainer extends Component {
 
         // arrow function to update weapon in state
         var updateWeapon = () => {
-            this.setState({ hasMace: true });
+            this.setState({ hasMace: hasMace });
             console.log("State weapon: " + this.state.hasMace);
         }
 
@@ -382,7 +383,14 @@ class PhaserContainer extends Component {
             this.fly2.anims.play('fly', true);
 
             if (gameOver) {
-                window.location.reload();
+                gameOver = false;
+                score = 0;
+                life = 3;
+                hasMace = false;
+                updateScore();
+                updateLife();
+                updateWeapon();
+                this.scene.restart("main");
             }
 
             // player move left

@@ -12,8 +12,7 @@ const App = () => (
       <Switch>
         <Route exact path="/" component={Home} />
         <PrivateRoute exact path="/menu" component={Menu} />
-        {/* // TODO: protect the game route */}
-        <Route exact path="/game" component={Game} />
+        <PrivateRoute exact path="/game" component={Game} />
         <Route component={NoMatch} />
       </Switch>
     </div>
