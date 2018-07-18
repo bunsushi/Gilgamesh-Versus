@@ -16,7 +16,10 @@ class PrivateRoute extends Component {
     async componentDidMount() {
         this.mounted = true;
         const isAuthed = await this.getAuthStatus();
-        if (this.mounted) this.setState({ isAuthenticated: isAuthed });
+        if (this.mounted) this.setState({
+            isAuthenticated: isAuthed,
+            proceedToLoad: true
+        });
     }
 
     componentWillUnmount() {
@@ -28,7 +31,6 @@ class PrivateRoute extends Component {
         console.log(res);
         let returnVal = await res.data;
         console.log(returnVal);
-        this.setState({ proceedToLoad: true });
         return returnVal;
     }
     
@@ -40,11 +42,13 @@ class PrivateRoute extends Component {
                 <Route exact path={path} component={component} />
             );
         }
-        else {
+        else if (!this.state.isAuthenticated && this.state.proceedToLoad) {
             return (
-                // <Redirect to="/" />
-                <div>Not isAuthenticated!!</div>
+                <Redirect to="/" />
             );
+        }
+        else {
+            return null;
         }
     }
 }
