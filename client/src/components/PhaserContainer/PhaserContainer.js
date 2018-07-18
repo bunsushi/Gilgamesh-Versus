@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { withRouter } from "react-router-dom";
 import Wrapper from "../../components/Wrapper";
 import Scoreboard from "../../components/Scoreboard";
 import API from "../../utils/API";
@@ -55,7 +56,7 @@ class PhaserContainer extends Component {
                 default: 'arcade',
                 arcade: {
                     gravity: { y: 800 },
-                    debug: true
+                    debug: false
                 }
             },
             scene: {
@@ -137,6 +138,10 @@ class PhaserContainer extends Component {
             var id = this.state.user.achievement;
             var achvObj = { weapMace: true };
             this.setAchievements(id, achvObj);
+
+            // Current redirects to /Menu page
+            // TODO: load top-down city map as a Phaser scene instead
+            this.props.history.push("/menu");
         };
 
         // collect key
@@ -144,10 +149,7 @@ class PhaserContainer extends Component {
             // change this to if has attacked all NPCs
             if (hasMace) {
                 console.log("You've won!");
-                // push hasMace to DB
-                // weapMace = true
                 pushDB();
-
             }
             else {
                 return;
@@ -447,4 +449,4 @@ class PhaserContainer extends Component {
     }
 }
 
-export default PhaserContainer;
+export default withRouter(PhaserContainer);
