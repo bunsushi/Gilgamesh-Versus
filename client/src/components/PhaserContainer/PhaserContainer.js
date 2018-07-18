@@ -367,6 +367,8 @@ class PhaserContainer extends Component {
 
             // enemy collides with player
             this.physics.add.overlap(this.player, this.fly, collisionHandler, null, this);
+            this.physics.add.overlap(this.player, this.fly2, collisionHandler, null, this);
+
 
             this.cameras.main.setBounds(0, 0, map.widthInPixels, map.heightInPixels); // keep camera in bounds of world
             this.cameras.main.startFollow(this.player); // camera follow player
