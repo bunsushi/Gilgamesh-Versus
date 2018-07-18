@@ -12,6 +12,7 @@ class PhaserContainer extends Component {
         achievement: {},
         score: 0,
         life: 3,
+        // killed: 0,
         gameOver: false,
         hasMace: false
     }
@@ -97,6 +98,9 @@ class PhaserContainer extends Component {
                     this.physics.add.overlap(player, coins, robNPC, null, this);
 
                     lion.disableBody(true, true);
+
+                    killed++; // add 1 to killed
+                    updateKilled();
                 }
                 else if (lion.body.touching.left) {
                     // lion.body.velocity.x = 150;
@@ -138,11 +142,14 @@ class PhaserContainer extends Component {
         var pushDB = () => {
             var id = this.state.user.achievement;
             var achvObj;
+            // if (this.state.killed === (total # of NPCs) && this.state.score >= this.state.achievement.xp) {
+            //     var achvObj = { weapMace: true, xp: this.state.score, achievements: 2 };
+            // }
             if (this.state.score >= this.state.achievement.xp) {
-                var achvObj = { weapMace: true, xp: this.state.score };
+                var achvObj = { weapMace: true, xp: this.state.score, achievements: 1 };
             }
             else {
-                var achvObj = { weapMace: true };
+                var achvObj = { weapMace: true, achievements: 1 };
             }
             this.setAchievements(id, achvObj);
 
@@ -214,8 +221,14 @@ class PhaserContainer extends Component {
             this.sound.play('coinCollect'); // play coinCollect
             coin.disableBody(true, true); // remove the tile/coin
             score++; // add 1 point to the score
+            updateScore();
             return false;
         };
+
+        var updateKilled = () => {
+            this.setState({ killed: killed });
+            console.log("State killed: " + this.state.killed);
+        }
 
         // arrow function to update score in state
         var updateScore = () => {
@@ -239,6 +252,7 @@ class PhaserContainer extends Component {
         var life = 3;
         var gameOver = false;
         var score = 0;
+        var killed = 0;
         var hasMace = false;
         var coins;
         var map;
