@@ -32,8 +32,8 @@ class Menu extends Component {
     API.getAchievements()
       .then(res => {
         this.setState({ achievement: res.data.achievement });
-        // console.log(this.state);
         this.checkAchievement();
+        console.log(this.state);
       })
       .catch(err => console.log(err));
   };
@@ -74,7 +74,7 @@ class Menu extends Component {
             <UserMenu user={this.state.user} onClick={this.signoutUser} />
           </Column>
           <Column size="col-md-9">
-            <Progress />
+            <Progress xp={this.state.achievement.xp} achievements={this.state.achievement.achievements} />
             <AchievementsContainer
               title="Achievements">
               {this.state.badges.map(badge => (
