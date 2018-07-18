@@ -137,7 +137,13 @@ class PhaserContainer extends Component {
 
         var pushDB = () => {
             var id = this.state.user.achievement;
-            var achvObj = { weapMace: true };
+            var achvObj;
+            if (this.state.score >= this.state.achievement.xp) {
+                var achvObj = { weapMace: true, xp: this.state.score };
+            }
+            else {
+                var achvObj = { weapMace: true };
+            }
             this.setAchievements(id, achvObj);
 
             // Current redirects to /Menu page
@@ -148,12 +154,12 @@ class PhaserContainer extends Component {
         // collect key
         function collectKey() {
             // change this to if has attacked all NPCs
-            if (hasMace) {
-                console.log("You've won!");
-                pushDB();
-            }
-            else {
-                return;
+            if (this.player.immune === false) {
+                if (hasMace) {
+                    console.log("You've won!");
+                    pushDB();
+                    this.player.immune = true;
+                }
             }
         }
 
