@@ -56,7 +56,7 @@ class PhaserContainer extends Component {
                 default: 'arcade',
                 arcade: {
                     gravity: { y: 800 },
-                    debug: true
+                    debug: false
                 }
             },
             scene: {
@@ -137,7 +137,8 @@ class PhaserContainer extends Component {
             var achvObj = { weapMace: true };
             this.setAchievements(id, achvObj);
 
-            // now go to /Menu page
+            // Current redirects to /Menu page
+            // TODO: load top-down city map as a Phaser scene instead
             this.props.history.push("/menu");
         };
 
@@ -146,10 +147,7 @@ class PhaserContainer extends Component {
             // change this to if has attacked all NPCs
             if (hasMace) {
                 console.log("You've won!");
-                // push hasMace to DB
-                // weapMace = true
                 pushDB();
-
             }
             else {
                 return;
