@@ -279,45 +279,28 @@ h1 {
         }
 }
 
-#resume-game-button {
-    width: 100%;
-
-    h4 {
-        color: black;
-        font-family: $press-start;
-        z-index: 1;
-        position: absolute;
-        top: 40%;
-        left: 20%;
-        text-shadow: 3px 3px $black-opaque;
-    }
-}
-
-#resume-game-button:hover {
-    cursor: pointer;
-}
-
 #resume-game {
     background: $gold;
-    width: 150px;
-    height: 150px;
     position: relative;
     text-align: center;
-    border-radius: 25px;
-    transform: rotate(20deg);
-    box-shadow: 5px 5px $black-opaque;
+    width: 175px;
+    height: 175px;
+    border: 10px solid #fff;
+    border-radius: 50%;
+    box-shadow: 10px 10px $black-opaque;
 }
 
-#resume-game:after {
-    content: "";
+#play-button {
     position: absolute;
-    top: 0;
-    left: 0;
-    height: 150px;
-    width: 150px;
-    background: $gold;
-    border-radius: 25px;
-    transform: rotate(135deg);
+    top: 50%;
+    left: 50%;
+    transform: translate(-40%, -50%);
+    font-size: 4em;
+}
+
+#resume-game:hover {
+    cursor: pointer;
+    transform: scale(1.2);
 }
 
 .badge-container {
