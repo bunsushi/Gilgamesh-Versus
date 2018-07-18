@@ -7,6 +7,9 @@ const Scoreboard = props => (
             <li className="nav-item">Score: {props.score}</li>
             <li className="nav-item">Life: {props.life}</li>
         </ul>
+        <ul className="navbar-nav ml-auto">
+            <li className="nav-item float-right">Find the mace and hit space to rob the citizens of Uruk!</li>
+        </ul>
     </nav>
 );
 
