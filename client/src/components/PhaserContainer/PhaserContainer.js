@@ -12,7 +12,7 @@ class PhaserContainer extends Component {
         achievement: {},
         score: 0,
         life: 3,
-        // killed: 0,
+        killed: 0,
         gameOver: false,
         hasMace: false
     }
@@ -142,10 +142,11 @@ class PhaserContainer extends Component {
         var pushDB = () => {
             var id = this.state.user.achievement;
             var achvObj;
-            // if (this.state.killed === (total # of NPCs) && this.state.score >= this.state.achievement.xp) {
-            //     var achvObj = { weapMace: true, xp: this.state.score, achievements: 2 };
-            // }
-            if (this.state.score >= this.state.achievement.xp) {
+            // update number of killed to reflect total number of NPCs
+            if (this.state.killed === 1 && this.state.score >= this.state.achievement.xp) {
+                var achvObj = { weapMace: true, achvShield: true, xp: this.state.score, achievements: 2 };
+            }
+            else if (this.state.score >= this.state.achievement.xp) {
                 var achvObj = { weapMace: true, xp: this.state.score, achievements: 1 };
             }
             else {
