@@ -122,6 +122,7 @@ class PhaserContainer extends Component {
         function checkForLoss() {
             if (life === 0) {
                 gameOver = true;
+                triggerGameOver();
             }
         }
 
@@ -200,6 +201,7 @@ class PhaserContainer extends Component {
             console.log("Ow!");
             setTimeout(function () {
                 gameOver = true;
+                triggerGameOver();
             }, 500);
         }
 
@@ -387,9 +389,9 @@ class PhaserContainer extends Component {
             this.fly.anims.play('fly', true);
             this.fly2.anims.play('fly', true);
 
-            if (gameOver) {
-                triggerGameOver();
-            }
+            // if (gameOver) {
+            //     triggerGameOver();
+            // }
 
             // player move left
             if (this.cursors.left.isDown) {
