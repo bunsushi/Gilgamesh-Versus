@@ -155,6 +155,7 @@ class PhaserContainer extends Component {
             // change this to if has attacked all NPCs
             if (this.player.immune === false) {
                 if (hasMace) {
+                    music.stop();
                     pushDB();
                     this.player.immune = true;
                 }
