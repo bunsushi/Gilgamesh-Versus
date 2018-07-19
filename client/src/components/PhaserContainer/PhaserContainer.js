@@ -257,7 +257,7 @@ class PhaserContainer extends Component {
         var hasMace = false;
         var coins;
         var map;
-        var groundLayer, coinLayer, bgGroundLayer, weaponLayer, buildingLayer, bgBuildingLayer, dangerLayer, keyLayer;
+        var groundLayer, coinLayer, bgGroundLayer, offsetGroundLayer, weaponLayer, buildingLayer, bgBuildingLayer, dangerLayer, keyLayer;
 
         function preload() {
             // LOAD FROM TILED MAP
@@ -291,6 +291,11 @@ class PhaserContainer extends Component {
 
             let bgGroundTiles = map.addTilesetImage('ground-tileset');
             bgGroundLayer = map.createDynamicLayer('BG-Ground', bgGroundTiles, 0, 0);
+
+            // load tiles for ground layer
+            let offsetGroundTiles = map.addTilesetImage('ground-tileset');
+            offsetGroundLayer = map.createDynamicLayer('Offset-Ground', offsetGroundTiles, 0, 0);
+            offsetGroundLayer.setCollisionByExclusion([-1]);
 
             // load tiles for ground layer
             let groundTiles = map.addTilesetImage('ground-tileset');
@@ -348,6 +353,7 @@ class PhaserContainer extends Component {
             this.player.body.setSize(this.player.width - 60, this.player.height - 8);
             this.player.immune = false;
             this.physics.add.collider(groundLayer, this.player);
+            this.physics.add.collider(offsetGroundLayer, this.player);
             this.physics.add.overlap(this.player, coinLayer);
             this.physics.add.overlap(this.player, weaponLayer);
             this.physics.add.collider(dangerLayer, this.player);
