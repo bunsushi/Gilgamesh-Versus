@@ -12,6 +12,7 @@ class PhaserContainer extends Component {
         achievement: {},
         score: 0,
         life: 3,
+        killed: 0,
         gameOver: false,
         hasMace: false
     }
@@ -34,7 +35,6 @@ class PhaserContainer extends Component {
         API.getAchievements()
             .then(res => {
                 this.setState({ achievement: res.data.achievement });
-                console.log(this.state);
             })
             .catch(err => console.log(err));
     }
@@ -42,7 +42,6 @@ class PhaserContainer extends Component {
     setAchievements = (id, achvObj) => {
         API.putAchievements(id, achvObj)
             .then(res => {
-                console.log("DB updated!");
             })
             .catch(err => console.log(err));
     }
@@ -74,10 +73,8 @@ class PhaserContainer extends Component {
 
             if (player.immune === false && hasMace === true && this.cursors.space.isDown) {
                 this.sound.play('maceSwing'); // play maceSwing
-                console.log("knock knock");
                 lion.hitPoints--; // make this more random
                 if (lion.hitPoints === 0) { // <= 0
-                    console.log("moneyyyy");
                     //  Some coins to collect, 10 in total, evenly spaced 70 pixels apart along the x axis
                     coins = this.physics.add.group({
                         key: 'coin',
@@ -97,23 +94,22 @@ class PhaserContainer extends Component {
                     this.physics.add.overlap(player, coins, robNPC, null, this);
 
                     lion.disableBody(true, true);
+
+                    killed++; // add 1 to killed
+                    updateKilled();
                 }
                 else if (lion.body.touching.left) {
-                    // lion.body.velocity.x = 150;
+                    lion.body.velocity.x = 150;
                     lion.flipX = false;
-                    console.log("that smarts!");
                 } else if (lion.body.touching.right) {
-                    // lion.body.velocity.x = -150;
+                    lion.body.velocity.x = -150;
                     lion.flipX = true;
-                    console.log("hey!");
                 }
 
                 player.immune = true;
-                console.log(player.immune + " Haha! I'm immune for one second!")
 
                 setTimeout(function () {
                     player.immune = false;
-                    console.log(player.immune + " Drat! I'm mortal again");
                 }, 1000);
             }
         }
@@ -129,7 +125,6 @@ class PhaserContainer extends Component {
         function collectCoin(sprite, tile) {
             this.sound.play('coinCollect'); // play coinCollect
             coinLayer.removeTileAt(tile.x, tile.y); // remove the tile/coin
-            console.log("Collecting a coin!");
             score++; // add 1 point to the score
             updateScore();
             return false;
@@ -137,7 +132,17 @@ class PhaserContainer extends Component {
 
         var pushDB = () => {
             var id = this.state.user.achievement;
-            var achvObj = { weapMace: true };
+            var achvObj;
+            // update number of killed to reflect total number of NPCs
+            if (this.state.killed === 4 && this.state.score >= this.state.achievement.xp) {
+                var achvObj = { weapMace: true, achvShield: true, xp: this.state.score, achievements: 2 };
+            }
+            else if (this.state.score >= this.state.achievement.xp) {
+                var achvObj = { weapMace: true, xp: this.state.score, achievements: 1 };
+            }
+            else {
+                var achvObj = { weapMace: true, achievements: 1 };
+            }
             this.setAchievements(id, achvObj);
 
             // Current redirects to /Menu page
@@ -148,19 +153,17 @@ class PhaserContainer extends Component {
         // collect key
         function collectKey() {
             // change this to if has attacked all NPCs
-            if (hasMace) {
-                console.log("You've won!");
-                pushDB();
-            }
-            else {
-                return;
+            if (this.player.immune === false) {
+                if (hasMace) {
+                    pushDB();
+                    this.player.immune = true;
+                }
             }
         }
 
         function collectWeapon(sprite, tile) {
             this.sound.play('maceCollect'); // play maceCollect
             weaponLayer.removeTileAt(tile.x, tile.y); // remove the tile/weapon
-            console.log("got you");
             this.player.anims.play('mace', true);
             hasMace = true;
             updateWeapon();
@@ -169,26 +172,21 @@ class PhaserContainer extends Component {
         // collision handler for player and enemy
         function collisionHandler(player, fly) {
             if (player.immune === false) {
-                console.log("boop");
                 // player.anims.play('ghost', true);
                 life--;
                 updateLife();
                 if (fly.body.touching.left) {
                     fly.body.velocity.x = 150;
                     fly.flipX = false;
-                    console.log("touchin' left");
                 } else if (fly.body.touching.right) {
                     fly.body.velocity.x = -150;
                     fly.flipX = true;
-                    console.log("touchin' right");
                 }
 
                 player.immune = true;
-                console.log(player.immune + " Haha! I'm immune for one second!")
 
                 setTimeout(function () {
                     player.immune = false;
-                    console.log(player.immune + " Drat! I'm mortal again");
                 }, 1000);
 
                 checkForLoss();
@@ -197,7 +195,6 @@ class PhaserContainer extends Component {
 
         // called when player touches a dangerous tile (water, spikes)
         function dangerHandler(player, dangerLayer) {
-            console.log("Ow!");
             setTimeout(function () {
                 gameOver = true;
             }, 250);
@@ -208,35 +205,38 @@ class PhaserContainer extends Component {
             this.sound.play('coinCollect'); // play coinCollect
             coin.disableBody(true, true); // remove the tile/coin
             score++; // add 1 point to the score
+            updateScore();
             return false;
         };
+
+        var updateKilled = () => {
+            this.setState({ killed: killed });
+        }
 
         // arrow function to update score in state
         var updateScore = () => {
             this.setState({ score: score });
-            console.log("State score: " + this.state.score);
         }
 
         // arrow function to update life in state
         var updateLife = () => {
             this.setState({ life: life });
-            console.log("State life: " + this.state.life);
         }
 
         // arrow function to update weapon in state
         var updateWeapon = () => {
             this.setState({ hasMace: hasMace });
-            console.log("State weapon: " + this.state.hasMace);
         }
 
         // game variables
         var life = 3;
         var gameOver = false;
         var score = 0;
+        var killed = 0;
         var hasMace = false;
         var coins;
         var map;
-        var groundLayer, coinLayer, bgGroundLayer, weaponLayer, buildingLayer, bgBuildingLayer, dangerLayer, keyLayer;
+        var groundLayer, coinLayer, bgGroundLayer, offsetGroundLayer, weaponLayer, buildingLayer, bgBuildingLayer, dangerLayer, keyLayer;
 
         function preload() {
             // LOAD FROM TILED MAP
@@ -253,11 +253,13 @@ class PhaserContainer extends Component {
             this.load.spritesheet('gilgamesh-mace', 'assets/game/character/gilgamesh-mace.png', { frameWidth: 96, frameHeight: 90 });
             this.load.spritesheet('enemy', 'assets/game/npc/fly-spritesheet.png', { frameWidth: 70, frameHeight: 40 });
             this.load.image('lion', 'assets/game/npc/lion.png');
+            this.load.image('sheep', 'assets/game/npc/sheep.png');
+            this.load.image('cow', 'assets/game/npc/cow.png');
+            this.load.image('bird', 'assets/game/npc/canary.png');
 
-            // sound effects
+            // SOUND EFFECTS
             this.load.audio('coinCollect', 'assets/game/sounds/handleCoins2.wav');
             this.load.audio('maceCollect', 'assets/game/sounds/drawKnife3.wav');
-
             this.load.audio('maceSwing', 'assets/game/sounds/phaserUp4.wav');
         }
 
@@ -270,6 +272,11 @@ class PhaserContainer extends Component {
 
             let bgGroundTiles = map.addTilesetImage('ground-tileset');
             bgGroundLayer = map.createDynamicLayer('BG-Ground', bgGroundTiles, 0, 0);
+
+            // load tiles for ground layer
+            let offsetGroundTiles = map.addTilesetImage('ground-tileset');
+            offsetGroundLayer = map.createDynamicLayer('Offset-Ground', offsetGroundTiles, 0, 0);
+            offsetGroundLayer.setCollisionByExclusion([-1]);
 
             // load tiles for ground layer
             let groundTiles = map.addTilesetImage('ground-tileset');
@@ -320,6 +327,31 @@ class PhaserContainer extends Component {
             this.lion.hitPoints = 3;
             this.physics.add.collider(groundLayer, this.lion);
 
+            // SHEEP
+            this.sheep = this.physics.add.sprite(50, 570, 'sheep');
+            this.sheep.setCollideWorldBounds(true);
+            this.sheep.body.setVelocityX(50);
+            this.sheep.body.setSize(this.sheep.width, this.sheep.height - 8);
+            this.sheep.hitPoints = 3;
+            this.physics.add.collider(groundLayer, this.sheep);
+
+            // COW
+            this.cow = this.physics.add.sprite(4000, 400, 'cow');
+            this.cow.setCollideWorldBounds(true);
+            this.cow.body.setVelocityX(100);
+            this.cow.body.setSize(this.cow.width, this.cow.height - 8);
+            this.cow.hitPoints = 3;
+            this.physics.add.collider(groundLayer, this.cow);
+
+            // BIRD
+            this.bird = this.physics.add.sprite(800, 90, 'bird');
+            this.bird.setCollideWorldBounds(true);
+            this.bird.body.setVelocityX(150);
+            this.bird.body.gravity.y = -800;
+            this.bird.body.setSize(this.bird.width, this.bird.height - 8);
+            this.bird.hitPoints = 3;
+            this.physics.add.collider(groundLayer, this.bird);
+
             // PLAYER    
             this.player = this.physics.add.sprite(50, 50, 'gilgamesh');
             this.player.setBounce(0.1);
@@ -327,11 +359,15 @@ class PhaserContainer extends Component {
             this.player.body.setSize(this.player.width - 60, this.player.height - 8);
             this.player.immune = false;
             this.physics.add.collider(groundLayer, this.player);
+            this.physics.add.collider(offsetGroundLayer, this.player);
             this.physics.add.overlap(this.player, coinLayer);
             this.physics.add.overlap(this.player, weaponLayer);
             this.physics.add.collider(dangerLayer, this.player);
             this.physics.add.overlap(keyLayer, this.player);
             this.physics.add.overlap(this.player, this.lion, attackHandler, null, this);
+            this.physics.add.overlap(this.player, this.sheep, attackHandler, null, this);
+            this.physics.add.overlap(this.player, this.cow, attackHandler, null, this);
+            this.physics.add.overlap(this.player, this.bird, attackHandler, null, this);
 
             // ENEMY FLY #1
             this.fly = this.physics.add.sprite(500, 380, 'enemy');
@@ -367,6 +403,8 @@ class PhaserContainer extends Component {
 
             // enemy collides with player
             this.physics.add.overlap(this.player, this.fly, collisionHandler, null, this);
+            this.physics.add.overlap(this.player, this.fly2, collisionHandler, null, this);
+
 
             this.cameras.main.setBounds(0, 0, map.widthInPixels, map.heightInPixels); // keep camera in bounds of world
             this.cameras.main.startFollow(this.player); // camera follow player
@@ -425,11 +463,11 @@ class PhaserContainer extends Component {
 
             // FLY BLOCKED BY WORLD BOUNDS
             if (this.fly2.body.blocked.right) {
-                this.fly2.body.setVelocityX(-100);
+                this.fly2.body.setVelocityX(-150);
                 this.fly2.flipX = true;
             }
             if (this.fly2.body.blocked.left) {
-                this.fly2.body.setVelocityX(100);
+                this.fly2.body.setVelocityX(150);
                 this.fly2.flipX = false;
             }
 
@@ -441,6 +479,36 @@ class PhaserContainer extends Component {
             if (this.lion.body.blocked.left) {
                 this.lion.body.setVelocityX(100);
                 this.lion.flipX = false;
+            }
+
+            // SHEEP BLOCKED BY WORLD BOUNDS
+            if (this.sheep.body.blocked.right) {
+                this.sheep.body.setVelocityX(-50);
+                this.sheep.flipX = true;
+            }
+            if (this.sheep.body.blocked.left) {
+                this.sheep.body.setVelocityX(50);
+                this.sheep.flipX = false;
+            }
+
+            // COW BLOCKED BY WORLD BOUNDS
+            if (this.cow.body.blocked.right) {
+                this.cow.body.setVelocityX(-100);
+                this.cow.flipX = true;
+            }
+            if (this.cow.body.blocked.left) {
+                this.cow.body.setVelocityX(100);
+                this.cow.flipX = false;
+            }
+
+            // BIRD BLOCKED BY WORLD BOUNDS
+            if (this.bird.body.blocked.right) {
+                this.bird.body.setVelocityX(-150);
+                this.bird.flipX = true;
+            }
+            if (this.bird.body.blocked.left) {
+                this.bird.body.setVelocityX(150);
+                this.bird.flipX = false;
             }
         };
 

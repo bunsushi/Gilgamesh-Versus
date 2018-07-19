@@ -17,7 +17,7 @@ const achievementSchema = new Schema({
     achvShield: {
         type: Boolean,
         required: false,
-        default: true
+        default: false
     },
     achvTrophy22: {
         type: Boolean,
@@ -72,7 +72,7 @@ const achievementSchema = new Schema({
     weapShield: {
         type: Boolean,
         required: false,
-        default: true
+        default: false
     },
     weapBowAndArrow: {
         type: Boolean,
