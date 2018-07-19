@@ -169,6 +169,7 @@ class PhaserContainer extends Component {
         // collision handler for player and enemy
         function collisionHandler(player, fly) {
             if (player.immune === false) {
+                this.sound.play('ouch'); // play ouch
                 console.log("boop");
                 // player.anims.play('ghost', true);
                 life--;
@@ -237,6 +238,7 @@ class PhaserContainer extends Component {
         var coins;
         var map;
         var groundLayer, coinLayer, bgGroundLayer, weaponLayer, buildingLayer, bgBuildingLayer, dangerLayer, keyLayer;
+        var music;
 
         function preload() {
             // LOAD FROM TILED MAP
@@ -257,8 +259,10 @@ class PhaserContainer extends Component {
             // sound effects
             this.load.audio('coinCollect', 'assets/game/sounds/handleCoins2.wav');
             this.load.audio('maceCollect', 'assets/game/sounds/drawKnife3.wav');
-
             this.load.audio('maceSwing', 'assets/game/sounds/phaserUp4.wav');
+            this.load.audio('jumpSound', 'assets/game/sounds/phaseJump3.wav');
+            this.load.audio('ouch', 'assets/game/sounds/highDown.wav');
+            this.load.audio('music', 'assets/game/sounds/BraveWorld.wav');
         }
 
         // required by Phaser 3
@@ -332,6 +336,8 @@ class PhaserContainer extends Component {
             this.physics.add.collider(dangerLayer, this.player);
             this.physics.add.overlap(keyLayer, this.player);
             this.physics.add.overlap(this.player, this.lion, attackHandler, null, this);
+            this.sound.add('jumpSound');
+            this.sound.add('ouch');
 
             // ENEMY FLY #1
             this.fly = this.physics.add.sprite(500, 380, 'enemy');
@@ -374,6 +380,13 @@ class PhaserContainer extends Component {
             // CREATE CURSORS KEYS
             this.cursors = this.input.keyboard.createCursorKeys();
 
+            //add backgroud music
+            music = this.sound.add('music');
+            music.play({
+                loop: true
+            });
+
+
         };
 
         // Required by Phaser 3
@@ -390,6 +403,7 @@ class PhaserContainer extends Component {
                 updateScore();
                 updateLife();
                 updateWeapon();
+                music.stop();
                 this.scene.restart("main");
             }
 
@@ -410,6 +424,7 @@ class PhaserContainer extends Component {
             }
             // player jump 
             if (this.cursors.up.isDown && this.player.body.onFloor()) {
+                this.sound.play('jumpSound'); // play jumpSound
                 this.player.body.setVelocityY(-500);
             }
 
