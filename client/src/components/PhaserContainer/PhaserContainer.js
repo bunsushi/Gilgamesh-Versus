@@ -35,7 +35,6 @@ class PhaserContainer extends Component {
         API.getAchievements()
             .then(res => {
                 this.setState({ achievement: res.data.achievement });
-                console.log(this.state);
             })
             .catch(err => console.log(err));
     }
@@ -43,7 +42,6 @@ class PhaserContainer extends Component {
     setAchievements = (id, achvObj) => {
         API.putAchievements(id, achvObj)
             .then(res => {
-                console.log("DB updated!");
             })
             .catch(err => console.log(err));
     }
@@ -75,10 +73,8 @@ class PhaserContainer extends Component {
 
             if (player.immune === false && hasMace === true && this.cursors.space.isDown) {
                 this.sound.play('maceSwing'); // play maceSwing
-                console.log("knock knock");
                 lion.hitPoints--; // make this more random
                 if (lion.hitPoints === 0) { // <= 0
-                    console.log("moneyyyy");
                     //  Some coins to collect, 10 in total, evenly spaced 70 pixels apart along the x axis
                     coins = this.physics.add.group({
                         key: 'coin',
@@ -103,21 +99,17 @@ class PhaserContainer extends Component {
                     updateKilled();
                 }
                 else if (lion.body.touching.left) {
-                    // lion.body.velocity.x = 150;
+                    lion.body.velocity.x = 150;
                     lion.flipX = false;
-                    console.log("that smarts!");
                 } else if (lion.body.touching.right) {
-                    // lion.body.velocity.x = -150;
+                    lion.body.velocity.x = -150;
                     lion.flipX = true;
-                    console.log("hey!");
                 }
 
                 player.immune = true;
-                console.log(player.immune + " Haha! I'm immune for one second!")
 
                 setTimeout(function () {
                     player.immune = false;
-                    console.log(player.immune + " Drat! I'm mortal again");
                 }, 1000);
             }
         }
@@ -133,7 +125,6 @@ class PhaserContainer extends Component {
         function collectCoin(sprite, tile) {
             this.sound.play('coinCollect'); // play coinCollect
             coinLayer.removeTileAt(tile.x, tile.y); // remove the tile/coin
-            console.log("Collecting a coin!");
             score++; // add 1 point to the score
             updateScore();
             return false;
@@ -143,7 +134,7 @@ class PhaserContainer extends Component {
             var id = this.state.user.achievement;
             var achvObj;
             // update number of killed to reflect total number of NPCs
-            if (this.state.killed === 1 && this.state.score >= this.state.achievement.xp) {
+            if (this.state.killed === 4 && this.state.score >= this.state.achievement.xp) {
                 var achvObj = { weapMace: true, achvShield: true, xp: this.state.score, achievements: 2 };
             }
             else if (this.state.score >= this.state.achievement.xp) {
@@ -164,7 +155,6 @@ class PhaserContainer extends Component {
             // change this to if has attacked all NPCs
             if (this.player.immune === false) {
                 if (hasMace) {
-                    console.log("You've won!");
                     pushDB();
                     this.player.immune = true;
                 }
@@ -174,7 +164,6 @@ class PhaserContainer extends Component {
         function collectWeapon(sprite, tile) {
             this.sound.play('maceCollect'); // play maceCollect
             weaponLayer.removeTileAt(tile.x, tile.y); // remove the tile/weapon
-            console.log("got you");
             this.player.anims.play('mace', true);
             hasMace = true;
             updateWeapon();
@@ -183,26 +172,21 @@ class PhaserContainer extends Component {
         // collision handler for player and enemy
         function collisionHandler(player, fly) {
             if (player.immune === false) {
-                console.log("boop");
                 // player.anims.play('ghost', true);
                 life--;
                 updateLife();
                 if (fly.body.touching.left) {
                     fly.body.velocity.x = 150;
                     fly.flipX = false;
-                    console.log("touchin' left");
                 } else if (fly.body.touching.right) {
                     fly.body.velocity.x = -150;
                     fly.flipX = true;
-                    console.log("touchin' right");
                 }
 
                 player.immune = true;
-                console.log(player.immune + " Haha! I'm immune for one second!")
 
                 setTimeout(function () {
                     player.immune = false;
-                    console.log(player.immune + " Drat! I'm mortal again");
                 }, 1000);
 
                 checkForLoss();
@@ -211,7 +195,6 @@ class PhaserContainer extends Component {
 
         // called when player touches a dangerous tile (water, spikes)
         function dangerHandler(player, dangerLayer) {
-            console.log("Ow!");
             setTimeout(function () {
                 gameOver = true;
             }, 250);
@@ -228,25 +211,21 @@ class PhaserContainer extends Component {
 
         var updateKilled = () => {
             this.setState({ killed: killed });
-            console.log("State killed: " + this.state.killed);
         }
 
         // arrow function to update score in state
         var updateScore = () => {
             this.setState({ score: score });
-            console.log("State score: " + this.state.score);
         }
 
         // arrow function to update life in state
         var updateLife = () => {
             this.setState({ life: life });
-            console.log("State life: " + this.state.life);
         }
 
         // arrow function to update weapon in state
         var updateWeapon = () => {
             this.setState({ hasMace: hasMace });
-            console.log("State weapon: " + this.state.hasMace);
         }
 
         // game variables
