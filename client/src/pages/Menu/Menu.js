@@ -13,11 +13,19 @@ class Menu extends Component {
     achievement: {},
     badges: badges,
     weapons: weapons,
+    proceedToLoad: false,
+    achvDidLoad: false
   };
 
-  componentDidMount() {
+  async componentDidMount() {
     this.getUser();
-    this.getAchievements();
+    await this.getAchievements();
+  };
+
+  componentDidUpdate() {
+    if (this.state.proceedToLoad && !this.state.achvDidLoad) {
+      this.checkAchievement();
+    }
   };
 
   getUser = () => {
@@ -31,9 +39,10 @@ class Menu extends Component {
   getAchievements = () => {
     API.getAchievements()
       .then(res => {
-        this.setState({ achievement: res.data.achievement });
-        // console.log(this.state);
-        this.checkAchievement();
+        this.setState({
+          achievement: res.data.achievement,
+          proceedToLoad: true
+        });
       })
       .catch(err => console.log(err));
   };
@@ -42,7 +51,6 @@ class Menu extends Component {
     event.preventDefault();
     API.signoutUser()
       .then(res => {
-        console.log(res.data);
         if (res.data === true) {
           this.props.history.push("/");
         }
@@ -51,22 +59,28 @@ class Menu extends Component {
   };
 
   checkAchievement = () => {
-    Object.keys(this.state.achievement).forEach(key => {
-      Object.keys(this.state.badges).forEach(token => {
-        if (key === this.state.badges[token].name) {
-          this.state.badges[token].earned = this.state.achievement[key]
+    // Clone this.state to the newState object
+    const newState = this.state;
+    // Update newState with results of each forEach loop
+    Object.keys(newState.achievement).forEach(key => {
+      Object.keys(newState.badges).forEach(token => {
+        if (key === newState.badges[token].name) {
+          newState.badges[token].earned = newState.achievement[key]
         }
       });
-      Object.keys(this.state.weapons).forEach(token => {
-        if (key === this.state.weapons[token].name) {
-          this.state.weapons[token].earned = this.state.achievement[key]
+      Object.keys(newState.weapons).forEach(token => {
+        if (key === newState.weapons[token].name) {
+          newState.weapons[token].earned = newState.achievement[key]
         }
       });
     });
+    // Set achvDidLoad to true after loops are complete to prevent infinite re-rendering
+    newState.achvDidLoad = true;
+    // Replace this.state with newState
+    this.setState(newState);
   };
 
   render() {
-    this.checkAchievement();
     return (
       <Wrapper>
         <Row>
