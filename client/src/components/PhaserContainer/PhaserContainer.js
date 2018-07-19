@@ -275,6 +275,8 @@ class PhaserContainer extends Component {
             this.load.spritesheet('enemy', 'assets/game/npc/fly-spritesheet.png', { frameWidth: 70, frameHeight: 40 });
             this.load.image('lion', 'assets/game/npc/lion.png');
             this.load.image('sheep', 'assets/game/npc/sheep.png');
+            this.load.image('cow', 'assets/game/npc/cow.png');
+            this.load.image('bird', 'assets/game/npc/canary.png');
 
             // SOUND EFFECTS
             this.load.audio('coinCollect', 'assets/game/sounds/handleCoins2.wav');
@@ -354,6 +356,23 @@ class PhaserContainer extends Component {
             this.sheep.hitPoints = 3;
             this.physics.add.collider(groundLayer, this.sheep);
 
+            // COW
+            this.cow = this.physics.add.sprite(4000, 400, 'cow');
+            this.cow.setCollideWorldBounds(true);
+            this.cow.body.setVelocityX(100);
+            this.cow.body.setSize(this.cow.width, this.cow.height - 8);
+            this.cow.hitPoints = 3;
+            this.physics.add.collider(groundLayer, this.cow);
+
+            // BIRD
+            this.bird = this.physics.add.sprite(800, 90, 'bird');
+            this.bird.setCollideWorldBounds(true);
+            this.bird.body.setVelocityX(150);
+            this.bird.body.gravity.y = -800;
+            this.bird.body.setSize(this.bird.width, this.bird.height - 8);
+            this.bird.hitPoints = 3;
+            this.physics.add.collider(groundLayer, this.bird);
+
             // PLAYER    
             this.player = this.physics.add.sprite(50, 50, 'gilgamesh');
             this.player.setBounce(0.1);
@@ -368,6 +387,8 @@ class PhaserContainer extends Component {
             this.physics.add.overlap(keyLayer, this.player);
             this.physics.add.overlap(this.player, this.lion, attackHandler, null, this);
             this.physics.add.overlap(this.player, this.sheep, attackHandler, null, this);
+            this.physics.add.overlap(this.player, this.cow, attackHandler, null, this);
+            this.physics.add.overlap(this.player, this.bird, attackHandler, null, this);
 
             // ENEMY FLY #1
             this.fly = this.physics.add.sprite(500, 380, 'enemy');
@@ -489,6 +510,26 @@ class PhaserContainer extends Component {
             if (this.sheep.body.blocked.left) {
                 this.sheep.body.setVelocityX(50);
                 this.sheep.flipX = false;
+            }
+
+            // COW BLOCKED BY WORLD BOUNDS
+            if (this.cow.body.blocked.right) {
+                this.cow.body.setVelocityX(-100);
+                this.cow.flipX = true;
+            }
+            if (this.cow.body.blocked.left) {
+                this.cow.body.setVelocityX(100);
+                this.cow.flipX = false;
+            }
+
+            // BIRD BLOCKED BY WORLD BOUNDS
+            if (this.bird.body.blocked.right) {
+                this.bird.body.setVelocityX(-150);
+                this.bird.flipX = true;
+            }
+            if (this.bird.body.blocked.left) {
+                this.bird.body.setVelocityX(150);
+                this.bird.flipX = false;
             }
         };
 
