@@ -51,7 +51,6 @@ class Menu extends Component {
     event.preventDefault();
     API.signoutUser()
       .then(res => {
-        console.log(res.data);
         if (res.data === true) {
           this.props.history.push("/");
         }
@@ -60,7 +59,9 @@ class Menu extends Component {
   };
 
   checkAchievement = () => {
+    // Clone this.state to the newState object
     const newState = this.state;
+    // Update newState with results of each forEach loop
     Object.keys(newState.achievement).forEach(key => {
       Object.keys(newState.badges).forEach(token => {
         if (key === newState.badges[token].name) {
@@ -73,7 +74,9 @@ class Menu extends Component {
         }
       });
     });
+    // Set achvDidLoad to true after loops are complete to prevent infinite re-rendering
     newState.achvDidLoad = true;
+    // Replace this.state with newState
     this.setState(newState);
   };
 
