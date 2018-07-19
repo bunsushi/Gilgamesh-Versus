@@ -153,11 +153,13 @@ class PhaserContainer extends Component {
         // collect key
         function collectKey() {
             // change this to if has attacked all NPCs
-            if (this.player.immune === false) {
-                if (hasMace) {
-                    pushDB();
-                    this.player.immune = true;
-                }
+            if (hasMace) {
+                console.log("You've won!");
+                music.stop();
+                pushDB();
+            }
+            else {
+                return;
             }
         }
 
