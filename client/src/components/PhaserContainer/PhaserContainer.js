@@ -274,11 +274,11 @@ class PhaserContainer extends Component {
             this.load.spritesheet('gilgamesh-mace', 'assets/game/character/gilgamesh-mace.png', { frameWidth: 96, frameHeight: 90 });
             this.load.spritesheet('enemy', 'assets/game/npc/fly-spritesheet.png', { frameWidth: 70, frameHeight: 40 });
             this.load.image('lion', 'assets/game/npc/lion.png');
+            this.load.image('sheep', 'assets/game/npc/sheep.png');
 
-            // sound effects
+            // SOUND EFFECTS
             this.load.audio('coinCollect', 'assets/game/sounds/handleCoins2.wav');
             this.load.audio('maceCollect', 'assets/game/sounds/drawKnife3.wav');
-
             this.load.audio('maceSwing', 'assets/game/sounds/phaserUp4.wav');
         }
 
@@ -346,6 +346,14 @@ class PhaserContainer extends Component {
             this.lion.hitPoints = 3;
             this.physics.add.collider(groundLayer, this.lion);
 
+            // SHEEP
+            this.sheep = this.physics.add.sprite(50, 570, 'sheep');
+            this.sheep.setCollideWorldBounds(true);
+            this.sheep.body.setVelocityX(50);
+            this.sheep.body.setSize(this.sheep.width, this.sheep.height - 8);
+            this.sheep.hitPoints = 3;
+            this.physics.add.collider(groundLayer, this.sheep);
+
             // PLAYER    
             this.player = this.physics.add.sprite(50, 50, 'gilgamesh');
             this.player.setBounce(0.1);
@@ -359,6 +367,7 @@ class PhaserContainer extends Component {
             this.physics.add.collider(dangerLayer, this.player);
             this.physics.add.overlap(keyLayer, this.player);
             this.physics.add.overlap(this.player, this.lion, attackHandler, null, this);
+            this.physics.add.overlap(this.player, this.sheep, attackHandler, null, this);
 
             // ENEMY FLY #1
             this.fly = this.physics.add.sprite(500, 380, 'enemy');
@@ -454,11 +463,11 @@ class PhaserContainer extends Component {
 
             // FLY BLOCKED BY WORLD BOUNDS
             if (this.fly2.body.blocked.right) {
-                this.fly2.body.setVelocityX(-100);
+                this.fly2.body.setVelocityX(-150);
                 this.fly2.flipX = true;
             }
             if (this.fly2.body.blocked.left) {
-                this.fly2.body.setVelocityX(100);
+                this.fly2.body.setVelocityX(150);
                 this.fly2.flipX = false;
             }
 
@@ -470,6 +479,16 @@ class PhaserContainer extends Component {
             if (this.lion.body.blocked.left) {
                 this.lion.body.setVelocityX(100);
                 this.lion.flipX = false;
+            }
+
+            // SHEEP BLOCKED BY WORLD BOUNDS
+            if (this.sheep.body.blocked.right) {
+                this.sheep.body.setVelocityX(-50);
+                this.sheep.flipX = true;
+            }
+            if (this.sheep.body.blocked.left) {
+                this.sheep.body.setVelocityX(50);
+                this.sheep.flipX = false;
             }
         };
 
