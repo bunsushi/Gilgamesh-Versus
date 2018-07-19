@@ -150,6 +150,7 @@ class PhaserContainer extends Component {
             // change this to if has attacked all NPCs
             if (hasMace) {
                 console.log("You've won!");
+                music.stop();
                 pushDB();
             }
             else {
