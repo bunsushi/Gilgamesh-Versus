@@ -1,8 +1,9 @@
 # Gilgamesh Versus
-Gilgamesh Versus is a single-player role playing game (RPG) loosely adapted from the ancient Mesopotamian story _The Epic of Gilgamesh_. Play as Gilgamesh, rule the city of Uruk, fight demons and gods with your best friend, and contemplate the meaning of life.
+Gilgamesh Versus is a single-player role playing game (RPG) loosely adapted from the ancient Mesopotamian story _The Epic of Gilgamesh_, from c. 2100 BCE. Play as Gilgamesh, rule the city of Uruk, fight demons and gods with your best friend, and contemplate the meaning of life.
 
-Gilgamesh Versus has eleven levels, each corresponding roughly to the story as written in the first eleven tablets of the standard Babylonian version of the epic.
+Gilgamesh Versus has eleven planned major levels ("tablets"), each corresponding roughly to the story as written in the first eleven tablets of the standard Babylonian version of the epic. Each tablet contains several smaller levels and mini-games as part of the main narrative.
 
+Currently, Tablet I is under active development.
 
 ## Tablet I: "He who saw the deep..."
 
@@ -25,15 +26,21 @@ After the player has completed all of the mini-games within the top-down city of
 
 ## Development
 
-Gilgamesh Versus is built with Phaser 3, React, Express, Node, and MongoDB + Mongoose. Gameplay is developed in Phaser, which is stored in a single React component and targets a canvas tag. The platformer map was made with lightly edited assets from Kenney.nl and Flaticon and built in Tiled, a tile map editor.
+Gilgamesh Versus is built with [Phaser 3](https://phaser.io/), React, Express, Node, and MongoDB + Mongoose. Gameplay is developed in Phaser, which is stored in a single React component and targets a canvas tag. The platformer map is made with lightly edited assets from [Kenney.nl](https://kenney.nl/) and [Flaticon](https://www.flaticon.com/) and built in [Tiled](https://www.mapeditor.org/), a tile map editor.
 
-Gilgamesh uses the authentication middleware Passport to securely store salted and hashed user passwords. User menu pages and game levels are protected routes.
+### Login
+
+Gilgamesh uses the authentication middleware [Passport](http://www.passportjs.org/) to securely store salted and hashed user passwords. User menu pages and game levels are protected routes.
 
 ![Level 1: Login](client/public/assets/images/gilgamesh-versus-login.png)
+
+### Menu
 
 The Menu page displays player achievements and progress and serves as the portal to gameplay. Players can earn two categories of achievements: weapons, which are collected in a level, and badges, which are earned by completing a certain task, e.g. reaching a point threshold or finishing under a certain time. Achievements and their associated information are rendered from a simple JSON object and a method within the React component checks against the database with a client-side API whether an achievement has been earned by an individual player.
 
 ![Level 1: Menu](client/public/assets/images/gilgamesh-versus-menu.png)
+
+### Deployment
 
 The project is regularly deployed on Heroku at http://gilgameshversus.herokuapp.com. For the most recent release version, the project is deployed on AWS at http://gilgamesh-versus.us-east-1.elasticbeanstalk.com.
 
@@ -44,8 +51,9 @@ We have released a very alpha demo version of Level 1 of Tablet I! In the coming
 * develop the top down map for Level 2
 * add sprite animations to the Level 1 platformer
 * add prologue and epilogue scenes to Level 1 to provide context to why you're robbing citizen animals with a mace--it's not very nice and your comeuppance is on the way!
+* error handling and messaging for incorrect or already taken user credentials
 
-I'd also like to amend the gameplay the first level less implicitly violent and more rude, e.g. instead of threatening animals with a mace, Gilgamesh shouts, "Boo! Gimme all your money!" Another major task will be to smooth the bleeding of the tilesets in Tiled with a tile extruder.
+I'd also like to amend the gameplay on the first level to be less implicitly violent and more rude, e.g. instead of threatening animals with a mace, Gilgamesh shouts, "Boo! Gimme all your money!" Another major task will be to smooth the bleeding of the tilesets in Tiled with a tile extruder.
 
 If you're interested in helping out with the game, are located in Philadelphia, and able to occasionally meet in person, fork this repo and drop me a line at the email listed on my profile with the subject title: "Gilgamesh Versus: I Volunteer as Tribute."
 
