@@ -25,7 +25,7 @@ After the player has completed all of the mini-games within the top-down city of
 
 ## Development
 
-Gilgamesh Versus is built with Phaser 3, React, Express, Node, and MongoDB + Mongoose. Gameplay is developed in Phaser, which is stored in a single React component and targets a canvas tag.
+Gilgamesh Versus is built with Phaser 3, React, Express, Node, and MongoDB + Mongoose. Gameplay is developed in Phaser, which is stored in a single React component and targets a canvas tag. The platformer map was made with lightly edited assets from Kenney.nl and Flaticon and built in Tiled, a tile map editor.
 
 Gilgamesh uses the authentication middleware Passport to securely store salted and hashed user passwords. User menu pages and game levels are protected routes.
 
@@ -36,6 +36,20 @@ The Menu page displays player achievements and progress and serves as the portal
 ![Level 1: Menu](client/public/assets/images/gilgamesh-versus-menu.png)
 
 The project is regularly deployed on Heroku at http://gilgameshversus.herokuapp.com. For the most recent release version, the project is deployed on AWS at http://gilgamesh-versus.us-east-1.elasticbeanstalk.com.
+
+## Current Progress
+
+### July 24, 2018
+We have released a very alpha demo version of Level 1 of Tablet I! In the coming months, our major goals will be to:
+* develop the top down map for Level 2
+* add sprite animations to the Level 1 platformer
+* add prologue and epilogue scenes to Level 1 to provide context to why you're robbing citizen animals with a mace--it's not very nice and your comeuppance is on the way!
+
+I'd also like to amend the gameplay the first level less implicitly violent and more rude, e.g. instead of threatening animals with a mace, Gilgamesh shouts, "Boo! Gimme all your money!" Another major task will be to smooth the bleeding of the tilesets in Tiled with a tile extruder.
+
+If you're interested in helping out with the game, are located in Philadelphia, and able to occasionally meet in person, fork this repo and drop me a line at the email listed on my profile with the subject title: "Gilgamesh Versus: I Volunteer as Tribute."
+
+-- [@bunsushi](https://github.com/bunsushi)
 
 ## Run Locally
 
