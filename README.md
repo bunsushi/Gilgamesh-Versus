@@ -61,4 +61,4 @@ If you're interested in helping out with the game, are located in Philadelphia, 
 
 ## Run Locally
 
-To run the game on your own machine, you must have yarn installed. Clone this repository and in the root directory, run ```yarn install```. Then run ```yarn start``` to spin up the React development server. Have fun!
+To run the game on your own machine, you must have yarn and MongoDB installed. Clone this repository and in the root directory, run ```yarn install```. Then run ```yarn start``` to spin up the React development server. In a seperate terminal window, make sure MongoDB is running by using the ```mongod``` command. Have fun!
